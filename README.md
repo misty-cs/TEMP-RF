@@ -1,7 +1,8 @@
-# Temporal Multi-Prototype Enrollment for Open-Set RF Fingerprinting
+# TEMP-RFF: Temporal Multi-Prototype Enrollment for Open-Set RF Fingerprinting
 
 This repository contains the experiment code for the ICC 2027 submission
-**"Temporal Multi-Prototype Enrollment for Open-Set RF Fingerprinting"**.
+**"TEMP-RFF: Temporal Multi-Prototype Enrollment for Open-Set RF
+Fingerprinting"**.
 
 The code evaluates open-set RF fingerprinting under cross-session shift using
 two datasets:
