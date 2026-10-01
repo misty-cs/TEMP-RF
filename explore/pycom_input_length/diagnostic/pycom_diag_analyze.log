@@ -1,0 +1,58 @@
+300 files, 45000 packets
+1. label -> folders: {0: ['device_1'], 1: ['device_2'], 2: ['device_3'], 3: ['device_4'], 4: ['device_6'], 5: ['device_7'], 6: ['device_8'], 7: ['device_9'], 8: ['device_10'], 9: ['device_11'], 10: ['device_12'], 11: ['device_13'], 12: ['device_16'], 13: ['device_17'], 14: ['device_18'], 15: ['device_19'], 16: ['device_21'], 17: ['device_24'], 18: ['device_25'], 19: ['device_26']} consistent: True
+2. mean power per 256-sample block (0..4095), rel. to first 1024: [0.97 1.02 1.   1.01 1.   0.99 1.01 0.98 0.98 0.99 0.99 0.98 0.97 0.98
+ 1.   0.97]
+   last/first block power ratio (mean over files): 1.02
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:45: RuntimeWarning: divide by zero encountered in matmul
+  A = S * np.exp(-1j * np.angle(S @ np.conj(S[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:45: RuntimeWarning: overflow encountered in matmul
+  A = S * np.exp(-1j * np.angle(S @ np.conj(S[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:45: RuntimeWarning: invalid value encountered in matmul
+  A = S * np.exp(-1j * np.angle(S @ np.conj(S[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:46: RuntimeWarning: divide by zero encountered in matmul
+  t = A.mean(0); q = np.abs(S @ np.conj(t / (np.linalg.norm(t) + 1e-12)))
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:46: RuntimeWarning: overflow encountered in matmul
+  t = A.mean(0); q = np.abs(S @ np.conj(t / (np.linalg.norm(t) + 1e-12)))
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:46: RuntimeWarning: invalid value encountered in matmul
+  t = A.mean(0); q = np.abs(S @ np.conj(t / (np.linalg.norm(t) + 1e-12)))
+3. within-file packet-template |corr|: median 0.852, min 0.191
+   template |corr| same device, same day : median 0.970 (p10 0.835, p90 0.992, n 89)
+   template |corr| same device, other day: median 0.957 (p10 0.877, p90 0.986, n 249)
+   template |corr| other devices         : median 0.946 (p10 0.819, p90 0.983, n 6802)
+4. CFO (Hz): std within file 161865; across files same day 55305; across files+days 151651; spread of device medians 81788 (range -268204..56646)
+5. accuracy, 20 devices (chance 0.050): centroid / 5-NN
+   representation            V1 day1 files1-3 -> 4-5 |          V2 day1 -> day2 |          V3 day2 -> day3
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:122: RuntimeWarning: divide by zero encountered in matmul
+  A = Xtr * np.exp(-1j * np.angle(Xtr @ np.conj(Xtr[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:122: RuntimeWarning: overflow encountered in matmul
+  A = Xtr * np.exp(-1j * np.angle(Xtr @ np.conj(Xtr[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:122: RuntimeWarning: invalid value encountered in matmul
+  A = Xtr * np.exp(-1j * np.angle(Xtr @ np.conj(Xtr[0])))[:, None]
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:124: RuntimeWarning: divide by zero encountered in matmul
+  cen = (np.abs(Xte @ np.conj(M).T)).argmax(1)
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:124: RuntimeWarning: overflow encountered in matmul
+  cen = (np.abs(Xte @ np.conj(M).T)).argmax(1)
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:124: RuntimeWarning: invalid value encountered in matmul
+  cen = (np.abs(Xte @ np.conj(M).T)).argmax(1)
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:125: RuntimeWarning: divide by zero encountered in matmul
+  S = np.abs(Xte @ np.conj(Xtr).T)
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:125: RuntimeWarning: overflow encountered in matmul
+  S = np.abs(Xte @ np.conj(Xtr).T)
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:125: RuntimeWarning: invalid value encountered in matmul
+  S = np.abs(Xte @ np.conj(Xtr).T)
+   start256 (current)                  0.135 / 0.315 |            0.119 / 0.169 |            0.153 / 0.232
+   start256 CFO removed                0.101 / 0.159 |            0.059 / 0.060 |            0.055 / 0.078
+   off512 len256                       0.133 / 0.329 |            0.117 / 0.172 |            0.150 / 0.230
+   off1024 len256                      0.133 / 0.324 |            0.115 / 0.166 |            0.150 / 0.228
+   off2048 len256                      0.129 / 0.322 |            0.115 / 0.167 |            0.147 / 0.227
+   start1024                           0.178 / 0.366 |            0.130 / 0.215 |            0.188 / 0.253
+   start4096                           0.284 / 0.325 |            0.213 / 0.206 |            0.253 / 0.252
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:128: RuntimeWarning: divide by zero encountered in matmul
+  cen = (Xte @ M.T).argmax(1); S = Xte @ Xtr.T
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:128: RuntimeWarning: overflow encountered in matmul
+  cen = (Xte @ M.T).argmax(1); S = Xte @ Xtr.T
+/private/tmp/claude-501/-Users-misty-Desktop-ICC-Extended/ff722695-8352-41b8-a671-57b5dccf6716/scratchpad/pycom_diag_analyze.py:128: RuntimeWarning: invalid value encountered in matmul
+  cen = (Xte @ M.T).argmax(1); S = Xte @ Xtr.T
+   log|FFT| 1024                       0.362 / 0.345 |            0.173 / 0.208 |            0.232 / 0.250
+   log|FFT| 4096                       0.349 / 0.301 |            0.168 / 0.200 |            0.282 / 0.295
+   CFO only                            0.151 / 0.134 |            0.052 / 0.046 |            0.058 / 0.056

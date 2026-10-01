@@ -1,0 +1,24 @@
+   skipped (<10 good packets): d1_device_11_tx_1_iq.npz (0)
+   skipped (<10 good packets): d3_device_8_tx_3_iq.npz (0)
+298 files, 41324 packets
+1. label -> folders: {0: ['device_1'], 1: ['device_2'], 2: ['device_3'], 3: ['device_4'], 4: ['device_6'], 5: ['device_7'], 6: ['device_8'], 7: ['device_9'], 8: ['device_10'], 9: ['device_11'], 10: ['device_12'], 11: ['device_13'], 12: ['device_16'], 13: ['device_17'], 14: ['device_18'], 15: ['device_19'], 16: ['device_21'], 17: ['device_24'], 18: ['device_25'], 19: ['device_26']} consistent: True
+2. mean power per 256-sample block (0..4095), rel. to first 1024: [0.99 1.02 0.99 1.   0.99 0.98 1.01 0.97 0.97 0.97 0.98 0.97 0.96 0.97
+ 0.99 0.96]
+   last/first block power ratio (mean over files): 0.97
+3. within-file packet-template |corr|: median 0.966, min 0.900
+   template |corr| same device, same day : median 0.979 (p10 0.948, p90 0.995, n 99)
+   template |corr| same device, other day: median 0.971 (p10 0.940, p90 0.991, n 228)
+   template |corr| other devices         : median 0.959 (p10 0.894, p90 0.987, n 6813)
+4. CFO (Hz): std within file 74113; across files same day 67387; across files+days 152570; spread of device medians 86028 (range -243615..100267)
+5. accuracy, 20 devices (chance 0.050): centroid / 5-NN
+   representation            V1 day1 files1-3 -> 4-5 |          V2 day1 -> day2 |          V3 day2 -> day3
+   start256 (current)                  0.175 / 0.360 |            0.149 / 0.205 |            0.195 / 0.265
+   start256 CFO removed                0.131 / 0.178 |            0.059 / 0.065 |            0.050 / 0.069
+   off512 len256                       0.172 / 0.376 |            0.132 / 0.205 |            0.190 / 0.260
+   off1024 len256                      0.178 / 0.374 |            0.129 / 0.202 |            0.188 / 0.255
+   off2048 len256                      0.184 / 0.367 |            0.129 / 0.199 |            0.186 / 0.253
+   start1024                           0.235 / 0.422 |            0.173 / 0.253 |            0.224 / 0.299
+   start4096                           0.339 / 0.378 |            0.255 / 0.237 |            0.311 / 0.300
+   log|FFT| 1024                       0.406 / 0.399 |            0.204 / 0.243 |            0.288 / 0.302
+   log|FFT| 4096                       0.363 / 0.352 |            0.193 / 0.242 |            0.341 / 0.365
+   CFO only                            0.153 / 0.122 |            0.062 / 0.044 |            0.065 / 0.047
