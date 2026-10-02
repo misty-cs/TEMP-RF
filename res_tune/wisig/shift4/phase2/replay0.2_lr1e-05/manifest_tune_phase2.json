@@ -1,0 +1,175 @@
+{
+ "stage": "tune_phase2",
+ "time": "2026-10-02 02:04:42",
+ "command": [
+  "-c",
+  "wisig",
+  "res_tune/wisig/shift4/phase2/replay0.2_lr1e-05",
+  "42",
+  "4"
+ ],
+ "config": {
+  "data_root": "data/wisig",
+  "output_root": "res_tune/wisig/shift4/phase2/replay0.2_lr1e-05",
+  "file_key": "*.bin",
+  "location": "",
+  "dataset_layout": "wisig_full",
+  "n_known": 12,
+  "n_val_dev": 0,
+  "n_unknown": 4,
+  "device_shift": 4,
+  "wisig_rx_index": 0,
+  "wisig_full_receiver": "node24-16",
+  "wisig_equalized": 0,
+  "init_day": 1,
+  "finetune_days": [
+   2
+  ],
+  "traj_day": 3,
+  "test_day": 4,
+  "num_slice": 780,
+  "slice_len": 256,
+  "window": 64,
+  "data_type": "IQ",
+  "mul_trans": true,
+  "start_idx": 0,
+  "stride": 288,
+  "model_type": "DF",
+  "emb_size": 128,
+  "activation": "elu",
+  "dropout_conv": 0.3,
+  "dropout_fc": 0.4,
+  "l2_reg": 0.0001,
+  "use_preprocessing": true,
+  "use_augmentation": true,
+  "aug_phase_rot": 3.14159,
+  "aug_amp_db": 2.0,
+  "aug_snr_db": 20.0,
+  "aug_prob": 0.7,
+  "aug_multipath_taps": 0,
+  "aug_multipath_mag": 0.0,
+  "ft_split_mode": "random",
+  "ft_n_train": 150,
+  "ft_n_repeats": 1,
+  "ft_always_reinit": false,
+  "traj_ewma": 0.8,
+  "traj_threshold": null,
+  "verbose": 1,
+  "seed": 42
+ },
+ "derived": {
+  "known_ids": [
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "unknown_ids": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "stride": 288
+ },
+ "env": {
+  "PYTHONHASHSEED": "42",
+  "T2R_FT_LR2": "1e-05",
+  "T2R_FT_NTEST": "60",
+  "T2R_FT_REPLAY": "0.2",
+  "T2R_KEEP_CFO": "1",
+  "T2R_MINIMAL": "1",
+  "T2R_P1_EPOCHS": "100",
+  "T2R_SKIP_PHASE4": "1",
+  "T2R_SUPCON_LAMBDA": "0.5",
+  "T2R_SUPCON_T": "0.07",
+  "TF_DETERMINISTIC_OPS": "1"
+ },
+ "code_sha256": {
+  "aggregate.py": "3893db8785592ecee4a0cc1a6734b3e7268e1110cfad467d4ee307b0a91806e2",
+  "audit_run.py": "bf129009eed8d773970948fa98c6a0c6e3be1b558d89a94241413fcb06b000f7",
+  "build_packet_cache.py": "3646b49ef93d156db5536a771935ea888164b18b8051602134f83ac127b892b4",
+  "common_eval.py": "61e63000788ec9f3ddc9a39289151cde57d81c7a4065d2b0ebf98bf1760d42a3",
+  "data_utils.py": "de69250492863fe021fe665a0f6824e86383b6b90348b2c68d439befd1f43f0e",
+  "datasets.py": "2087693b7bdae7a375dbb3640bfb703b8ff7dfb29a32e95a9c62c37d26a9c399",
+  "embedding_whitening.py": "b5c94914fc88e57146cd4855deacd4135c82399e873968f26678fb13378cce5a",
+  "experiment_config.py": "2f6b9a17e871b3a87d92cd360caab5355d98eb4cd0ad1f7404aef74216adab94",
+  "finetune.py": "bdb4e3e8a1c54dfc7d8578f67f2a44c3e89a7190f7afcf3b2972d5e76cb82d56",
+  "joint_eval.py": "000ba143921fccca96d08cf0ba195a33917c02f1801900a46a21cd3eb6ddd9df",
+  "load_slice_IQ.py": "7009d881cccffab3d1c099ae4bcfd45d38c5c9050b8763e0592a44f1b51b332a",
+  "main.py": "59bbccb3147b2fd13196359267f2a6436ca935bdc70f9218b80c546c21dabf3d",
+  "manifest.py": "d1e5e638efbdace830fa88399605a3e4a32c1e2493df6c804bdc5cd05e7cc174",
+  "openmax.py": "9d1708e98499f82d793885c963a2d2e92747bc965c2c29cf88ac17d147c0fa08",
+  "paper_plots.py": "5ad7be7ef4c68fb15943f7ca53dc11599a5a007b98fe676142f740d9dd7c9f52",
+  "paper_plots_extended.py": "61eb9ec42d52b3760f80dd72736150dc23cdaff75cbd9ed19872f9f980002727",
+  "phase1_initial_training.py": "6b895123946ee73e62b3f37d11bfad0c3027abf6fb125d1c458651f011fe9145",
+  "phase2_sequential_finetuning.py": "f015093517bd289ae7ee6284b3ffae806a96fa281b3f1aa96288fbad86a1192f",
+  "phase3_trajectory_building.py": "426d24cc2c5de57a221dbfea7beecbcf287c6e72dfe0df3a8ae00f20dc3619b3",
+  "phase4_openset_evaluation.py": "29dd1233efd6a2a7e7b020e3f082c698efc13a0aa8b750ae65c93cfb924e1785",
+  "pool_check.py": "869c247783000ce8685ce18e7cedb51736b913e56f255dc3a75652f7e17bbc4d",
+  "proto_improve.py": "aa4e9fe871e004edde7e5b7d610dacc54ac6ef14cbf29156f16151c128c8d6fd",
+  "provenance_checks.py": "3efe6acc566baf15e2a621e667d67e99a311c95ed963039e816f67240c842806",
+  "repro.py": "8008f175177d784942b66be03e1da076744e61af683ff976732903744eac173e",
+  "rf_models.py": "9e6d376c8a69e1fc31f2ad131344c463acea7dc788dc6d3a29c21296b55ede2d",
+  "run_experiment.py": "b87a8263a36fbc75b4fb532fb6a93f02c717784ec7abf4cf272683262ef29ff1",
+  "selection.py": "c0417b995495a35f30d0b03c424986f5c8564385efb2eab6569965fd6a18a62f",
+  "signal_preprocessing.py": "801cec1e688e8e076475e079befb70d998ec772ae181b51fdb0a53e6fba69323",
+  "temporal_trajectory.py": "51432a82d60ccbfa80c36647d7386944ba6cbb83cdfcec502fe453080713d480",
+  "tta_bn.py": "ac1401c93de3814e500bab7779fb28cdc217c6b7eae70140ce29bc97fbe7277f",
+  "tune_phase1.py": "a07cdf5291647ad17137c005547af1b773f78a05ffbc275f019a0006837d9192",
+  "tune_phase2.py": "0113376ef40b81d23ab3b281040fed53d02067256614aa259fbb0b74a1a27310",
+  "xsession_finetune.py": "ef9f6333f7f0c39a99315c5944866d2874c02d2e9528c637c30bfddefb07438a"
+ },
+ "code_sha256_all": "b98b4dcb4c16f889fe7668fd771a5104ea0c4ecb9bebdda9769933c53de6f8e7",
+ "versions": {
+  "python": "3.13.5",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "numpy": "2.2.6",
+  "scipy": "1.17.0",
+  "sklearn": "1.8.0",
+  "tensorflow": "2.20.0",
+  "keras": "3.13.2"
+ },
+ "data": {
+  "1": [
+   {
+    "file": "dataset_2021_03_01_node24-16.pkl",
+    "size": 189814627,
+    "mtime": 1789854813,
+    "sha256": "61cfd23cee62943ba56e5a1598cad789084e720005e98b4fe86e6895435bfe17"
+   }
+  ],
+  "2": [
+   {
+    "file": "dataset_2021_03_08_node24-16.pkl",
+    "size": 208844804,
+    "mtime": 1789854813,
+    "sha256": "f8688fa466711b558f71ff4e1c6e44372b5615deaf03c803b6acc42c920caf60"
+   }
+  ],
+  "3": [
+   {
+    "file": "dataset_2021_03_15_node24-16.pkl",
+    "size": 207079582,
+    "mtime": 1789854813,
+    "sha256": "98d91e8f159f96bf1dbe4e37154ad664300e1293e281f012ee25e1a7b4ca9cb3"
+   }
+  ],
+  "4": [
+   {
+    "file": "dataset_2021_03_23_node24-16.pkl",
+    "size": 201181793,
+    "mtime": 1789854813,
+    "sha256": "15fd3dcac3d74dde1903bbdbb42672081677f4a9f3a391d3cd8a96067eb3cefb"
+   }
+  ]
+ }
+}
