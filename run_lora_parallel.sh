@@ -19,6 +19,7 @@ selected_n() { [ -f res_tune/$1/selected_phase$2.json ] && $PY -c "import json; 
 waitlora() { until $PY data_prep/lora_dedup.py --check data/lora_indoor >/dev/null 2>&1; do echo "$(date) lora data missing, waiting" >> $LOG; sleep 120; done; }
 
 say "START"
+while pgrep -f "tune_phase.\.py --dataset lora" >/dev/null; do sleep 120; done   # an earlier start of this script still tunes
 waitlora
 $PY -u pool_check.py --dataset lora > pool_check_lora.log 2>&1 || { say "LoRa pool rule FAILED - see pool_check_lora.log; stopping"; exit 1; }
 cp pool_check_lora.log docs/pool_check_lora.txt
@@ -35,7 +36,7 @@ for ph in 1 2; do
   say "tune_phase$ph lora done"; commit "Tuning: lora Phase $ph selected for all splits" res_tune/lora
 done
 say "LoRa tuning done; waiting for Pycom tuning"
-until [ "$(selected_n pycom 2)" = "$(nshifts pycom)" ] && ! pgrep -f "tune_phase|main.py" >/dev/null; do sleep 300; done
+until [ "$(selected_n pycom 2)" = "$(nshifts pycom)" ] && ! pgrep -f "tune_phase|res_pilot_tuned" >/dev/null; do sleep 300; done   # WiSig finals (run_wisig_early.sh) may run
 commit "Tuning: pycom Phase 1 and 2 (state at the start of run_all.sh v2)" res_tune/pycom
 say "starting run_all.sh v2 (run_all.sh v1, PID 36842, only waits at its old LoRa check; it can be stopped)"
 nohup ./run_all.sh >/dev/null 2>&1 &

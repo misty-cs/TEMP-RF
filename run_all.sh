@@ -87,6 +87,7 @@ commit "Tuned pilots (split 0, seed 42): all audits pass"
 say "FINAL RUNS"
 final() {   # $1 dataset: seed by seed (complete seeds cover all splits early), then repeat until complete
   want=$(( $(nshifts $1) * 5 ))
+  while pgrep -f run_wisig_early.sh >/dev/null; do sleep 300; done   # WiSig finals started early (PROTOCOL 16.1)
   for s in 42 7 13 21 100; do waitdata $1; "${N[@]}" $PY -u main.py --dataset $1 --root res --seeds $s --go >> res_$1.log 2>&1; done
   runs $1 res $want || say "final $1 incomplete ($(ok_runs res $1)/$want)"
   for attempt in 1 2 3; do waitdata $1; "${N[@]}" $PY -u main.py --dataset $1 --joint --go >> res_joint_$1.log 2>&1; done

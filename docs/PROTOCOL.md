@@ -389,3 +389,9 @@ draft) are superseded; their code differs (see sections 12-15).
   Results do not depend on the order (seeded, deterministic, separate folders).
   The automatic v1 commit after Pycom tuning may contain partial LoRa tuning
   files; the LoRa commits after each LoRa phase hold the complete state.
+- **WiSig final runs started early (author's decision, 2026-10-02).** WiSig
+  tuning is complete and WiSig uses no Pycom/LoRa result, so its final runs
+  start as soon as its tuned pilot audit passes (`run_wisig_early.sh`, same
+  commands as `run_all.sh` `final()`), in parallel with Pycom/LoRa tuning.
+  `run_all.sh` v2 waits for it and then skips every complete WiSig run. The
+  WiSig tuned pilot was repeated with the current code (22:19).
