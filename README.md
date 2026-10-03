@@ -17,6 +17,9 @@ reject devices that were never enrolled, across capture days.
 Place (or link) the data as `data/wisig/`, `data/pycom_indoor/` (Day_1 ...
 Day_5) and `data/lora_indoor/` (Day1 ... Day5). The Pycom source was verified
 file by file (`explore/pycom_verify/`); see `docs/PROTOCOL.md` section 14.
+The LoRa source stores 11 recordings twice; `data/lora_indoor` is the
+de-duplicated tree made by `python data_prep/lora_dedup.py <download> <tree>`
+(both copies excluded; `docs/PROTOCOL.md` section 16.1).
 
 ## Install
 

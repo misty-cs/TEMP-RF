@@ -11,6 +11,9 @@
 # until it is complete (failed attempts are kept as *.failedN, never deleted).
 # After each stage the results are committed to git (code is frozen during the
 # study; see docs/PROTOCOL.md section 16).
+# v2 (2026-10-03, before any LoRa tuning; PROTOCOL.md 16.1): LoRa uses the
+# de-duplicated tree (data_prep/lora_dedup.py); only the LoRa completeness
+# check changed. Restarting repeats nothing that is complete.
 cd "$(dirname "$0")"
 PY=${PYTHON:-/usr/local/bin/python3.13}
 N=(nice -n 10)
@@ -67,19 +70,14 @@ runs() {   # $1 dataset, $2 root, $3 expected count, then main.py args
 say "START"
 tune wisig
 tune pycom
-lora_complete() {   # every pool file of the LoRa design present with its full size (160,000,000 bytes)
-  $PY -c "
-import os, datasets as D
-pool = [int(v) + 1 for v in D.DATASETS['lora']['env']['T2R_DEVICE_POOL'].split(',')]
-root = D.DATASETS['lora']['data_root']
-ok = all(os.path.exists(f) and os.path.getsize(f) == 160000000
-         for d in range(1, 6) for k in pool for f in [f'{root}/Day{d}/Device{k}/IQ_{i}.dat' for i in range(1, 11)])
-print('yes' if ok else 'no')"
+lora_complete() {   # de-duplicated LoRa tree = downloaded files minus the listed duplicates
+  $PY data_prep/lora_dedup.py --check data/lora_indoor >/dev/null 2>&1 && echo yes || echo no
 }
 until [ "$(lora_complete)" = "yes" ]; do echo "$(date) waiting for the LoRa download" >> $LOG; sleep 600; done
 waitdata lora
 $PY -u pool_check.py --dataset lora > pool_check_lora.log 2>&1 || { say "LoRa pool rule FAILED - see pool_check_lora.log; stopping"; commit "LoRa pool check (failed)"; exit 1; }
-commit "LoRa: download complete, device-pool rule passes"
+cp pool_check_lora.log docs/pool_check_lora.txt
+commit "LoRa: de-duplicated tree complete, device-pool rule passes"
 tune lora
 
 say "TUNED PILOTS"

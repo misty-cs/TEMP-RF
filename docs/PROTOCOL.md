@@ -347,3 +347,45 @@ draft) are superseded; their code differs (see sections 12-15).
   committed code produced which results.
 - Includes the fixes of sections 12-15 (split fallbacks, verified Pycom copy and
   pool, seeded augmentation, bank-size restore).
+
+### 16.1 LoRa duplicated recordings (2026-10-02, before any LoRa tuning)
+
+- **Finding.** `pool_check.py --dataset lora` on the complete download failed
+  only its duplicate test (quality passed for all 20 pool devices). A full
+  scan (`data_prep/lora_dedup.py`, SHA-256 of whole files) found 11 recordings
+  that are stored byte for byte twice: 10 under two neighbouring device IDs on
+  the same day with the same file number (e.g. Day4 Device18 and Device19
+  IQ_5), 1 twice under one device (Day2 Device7 IQ_1 = IQ_2). The server
+  copies are identical as well (first 64 KiB of 3 pairs compared), so it is a
+  source error, not a download error. Two independent 20 s captures cannot be
+  equal; the metadata gives no capture time or checksum, so the true
+  transmitter cannot be determined. List: `data_prep/lora_duplicates.json`.
+- **Decision (author, 2026-10-02).** Both copies of every duplicated recording
+  are excluded (22 of 1,240 files); all devices are kept. The device pool is
+  unchanged (folders 1-8, 10-21). Pool devices lose 1-2 of 10 files on at most
+  two days (Device5/6/7/8/12/14/18/19); 780 slices per device and day are
+  still drawn (water-filled over the remaining files); the test day of the
+  pool is not affected. Alternatives considered: keep only the 12 devices
+  without duplicates (smaller design than WiSig/Pycom) or drop LoRa.
+- **Implementation.** `data/lora_indoor` points to a tree of links to the
+  download without the excluded files (`data_prep/lora_dedup.py SRC DST`;
+  the download itself is unchanged). `pool_check.py` expects 10 files minus
+  the excluded ones per device and day; `run_all.sh` v2 checks the tree with
+  `lora_dedup.py --check`. Result of the pool rule on this tree:
+  `docs/pool_check_lora.txt` (POOL PASS, no duplicates).
+- **Effect on other results: none.** Tuning identities hash only the code the
+  tuning runs (`manifest.PHASE1_CODE`, `PHASE2_CODE`), which does not include
+  `pool_check.py`, so WiSig and Pycom tuning stay valid. Run manifests hash
+  all top-level `*.py`, so the WiSig tuned pilot made before this change
+  (audit passed) is kept in `docs/superseded_runs/wisig_pilot_v1code/` and
+  the pilot is repeated with the current code.
+- **Run control (author's decision, 2026-10-02).** To save time, LoRa tuning
+  runs in parallel with Pycom tuning (separate process, same commands as
+  `run_all.sh`, `tune()`); `run_all.sh` v1 keeps running Pycom tuning and then
+  waits at its old LoRa completeness check, which the de-duplicated tree never
+  satisfies, so it never runs LoRa. When the tuning of both datasets is
+  complete, `run_all.sh` v2 is started; it skips every complete tuning
+  candidate and continues with the tuned pilots, final runs and aggregation.
+  Results do not depend on the order (seeded, deterministic, separate folders).
+  The automatic v1 commit after Pycom tuning may contain partial LoRa tuning
+  files; the LoRa commits after each LoRa phase hold the complete state.

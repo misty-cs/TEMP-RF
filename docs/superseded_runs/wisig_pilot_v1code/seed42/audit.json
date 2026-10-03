@@ -1,0 +1,102 @@
+{
+ "run": "res_pilot_tuned/wisig/shift0/seed42",
+ "all_pass": true,
+ "checks": [
+  {
+   "check": "sessions",
+   "pass": true,
+   "detail": "init 1, fine-tune [2], reference 3, test 4"
+  },
+  {
+   "check": "devices",
+   "pass": true,
+   "detail": "known [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] / unknown [12, 13, 14, 15]"
+  },
+  {
+   "check": "phase1_groups",
+   "pass": true,
+   "detail": "parts train 6091 groups, val_ 1303 groups, test_ 1303 groups non-empty, every device, disjoint"
+  },
+  {
+   "check": "phase2_groups_d2",
+   "pass": true,
+   "detail": "parts train 5029 groups, val_ 1675 groups, test_ 1678 groups non-empty, every device, disjoint"
+  },
+  {
+   "check": "phase3_parts",
+   "pass": true,
+   "detail": "sizes 4773/2329/2258; saved identities present True; shared groups A&B 0, A&C 0, B&C 0; reproduces Phase 3 (indices, fresh groups, labels, all devices): True; BN adapted on Part A only: True"
+  },
+  {
+   "check": "phase3_banks",
+   "pass": true,
+   "detail": "day 1: 2834 bank slices, 0 trained groups used, all devices True; day 2: 3365 bank slices, 0 trained groups used, all devices True"
+  },
+  {
+   "check": "test_set",
+   "pass": true,
+   "detail": "9360 known + 3120 unknown slices; recomputed per device min 780 max 780 (budget 780); stored counts match: True; input hash recomputed matches: True"
+  },
+  {
+   "check": "protocol_invariance",
+   "pass": true,
+   "detail": "every threshold protocol uses the rule's own prediction and score"
+  },
+  {
+   "check": "selection_sensitivity",
+   "pass": true,
+   "detail": "weight 0.5 with the tie rule reproduces the Phase-3 choice"
+  },
+  {
+   "check": "eval_complete",
+   "pass": true,
+   "detail": "20 rules; selection tables ['knn', 'knn_window', 'openmax', 'probe', 'static_window', 'temp_rff_p1']"
+  },
+  {
+   "check": "partA_check",
+   "pass": true,
+   "detail": "max |diff| 0.0"
+  },
+  {
+   "check": "same_code",
+   "pass": true,
+   "detail": "identical code"
+  },
+  {
+   "check": "determinism",
+   "pass": true,
+   "detail": "TF_DETERMINISTIC_OPS=1"
+  },
+  {
+   "check": "same_config",
+   "pass": true,
+   "detail": "training and evaluation used the same configuration"
+  },
+  {
+   "check": "same_versions",
+   "pass": true,
+   "detail": "training and evaluation used the same software versions"
+  },
+  {
+   "check": "same_settings",
+   "pass": true,
+   "detail": "training and evaluation used identical T2R_* settings"
+  },
+  {
+   "check": "artifacts",
+   "pass": true,
+   "detail": "result, manifests, Phase-3 model and calibration present; hashes recorded"
+  }
+ ],
+ "artifacts": {
+  "common_eval.json": "413369e727dcb41a566e39ce48b1b0f21db0bd56f1bb58857dc2e725af3bbf1a",
+  "manifest_train.json": "c3c422eb2165275770eb9036bb8cedb2f57d2d2ff010a3c7af57ea6ce8209925",
+  "manifest_eval.json": "4ef814dfdc7a4ff6535f662accccfe2a4649fab438293c46d1ab74730c0fada0",
+  "results_phase3.txt": "5b20ce45de63eff51a6336ef5b0ac9565dd2342d0de3f167f41e0e0faa67c7d5",
+  "phase3_model": "f620df9362481a1e288967571de2c32802e48928f159091aebdbee2449675eb7",
+  "phase3_calibration": "40308fbef1ed772d7b9f4d555d8d37f003d6453dbf59764b3d1af0f8e428fd65"
+ },
+ "study": {
+  "code_sha256_all": "b98b4dcb4c16f889fe7668fd771a5104ea0c4ecb9bebdda9769933c53de6f8e7"
+ }
+}

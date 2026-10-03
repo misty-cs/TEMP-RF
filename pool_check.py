@@ -16,6 +16,9 @@ Rule, applied identically to every device of a dataset:
       train / val / test files; Phases 2-3 need >= 3 groups);
   - availability on the test day (Day 5): all capture files present
     (Pycom 5, LoRa 10 per device). Test-day counts are printed, not used.
+LoRa: the data root is the de-duplicated tree (data_prep/lora_dedup.py,
+PROTOCOL.md 16.1); "all capture files" means 10 minus the files excluded there
+as duplicated recordings (data_prep/lora_duplicates.json).
 """
 import argparse, glob, hashlib, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -23,6 +26,7 @@ import datasets as D, load_slice_IQ as L
 
 p = argparse.ArgumentParser()
 p.add_argument('--dataset', default='pycom', choices=['pycom', 'lora'])
+p.add_argument('--root', default=None, help='data root (default: data_root in datasets.py)')
 p.add_argument('devices', nargs='*', type=int, help='folder numbers (default: the pool in datasets.py)')
 a = p.parse_args()
 CFG = {'pycom': dict(day='Day_{d}', dev='device_{k}', files='*.dat', n_files=5,
@@ -30,7 +34,14 @@ CFG = {'pycom': dict(day='Day_{d}', dev='device_{k}', files='*.dat', n_files=5,
        'lora':  dict(day='Day{d}', dev='Device{k}', files='IQ_*.dat', n_files=10,
                      count=lambda f: L.read_lora_slices(f, None, 1024)[1])}[a.dataset]
 TEST_DAY = D.DATASETS[a.dataset]['test_day']
-root = os.path.join(os.path.dirname(os.path.abspath(__file__)), D.DATASETS[a.dataset]['data_root'])
+root = a.root or os.path.join(os.path.dirname(os.path.abspath(__file__)), D.DATASETS[a.dataset]['data_root'])
+EXCLUDED = {}                               # (day, device) -> files excluded as duplicated recordings
+if a.dataset == 'lora':
+    import json
+    for g in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_prep', 'lora_duplicates.json')))['duplicates']:
+        for f in g['files']:
+            _day, _dev = f.split('/')[:2]
+            k = (int(_day[3:]), int(_dev[6:])); EXCLUDED[k] = EXCLUDED.get(k, 0) + 1
 
 
 def _h(path):
@@ -54,7 +65,7 @@ for dev in devs:
         files = sorted(glob.glob(os.path.join(root, CFG['day'].format(d=day), CFG['dev'].format(k=dev), CFG['files'])))
         n = [CFG['count'](f) for f in files]
         good_files = sum(1 for x in n if x >= 50)
-        day_ok = len(files) == CFG['n_files'] and (day == TEST_DAY or (sum(n) >= 780 and good_files >= 3))
+        day_ok = len(files) == CFG['n_files'] - EXCLUDED.get((day, dev), 0) and (day == TEST_DAY or (sum(n) >= 780 and good_files >= 3))
         ok &= day_ok
         rows.append(f'D{day}:{sum(n)}/{good_files}f' + ('' if day_ok else '!'))
     all_ok &= ok
