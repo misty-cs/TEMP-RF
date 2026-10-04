@@ -1,6 +1,6 @@
 #!/bin/zsh
 # LoRa tuning in parallel with the Pycom tuning of run_all.sh v1 (PROTOCOL.md 16.1).
-# Same commands as run_all.sh tune(); then, when Pycom and LoRa tuning are both
+# Same commands as run_all.sh tune(), one worker per split (2026-10-04); then, when Pycom and LoRa tuning are both
 # complete and nothing else runs, start run_all.sh v2 (pilots, finals, aggregation).
 cd "$(dirname "$0")"
 PY=${PYTHON:-/usr/local/bin/python3.13}
@@ -18,16 +18,19 @@ nshifts() { $PY -c "import datasets as D; print(len(D.default_shifts('$1')))"; }
 selected_n() { [ -f res_tune/$1/selected_phase$2.json ] && $PY -c "import json; print(len(json.load(open('res_tune/$1/selected_phase$2.json'))))" || echo 0; }
 waitlora() { until $PY data_prep/lora_dedup.py --check data/lora_indoor >/dev/null 2>&1; do echo "$(date) lora data missing, waiting" >> $LOG; sleep 120; done; }
 
-say "START"
-while pgrep -f "tune_phase.\.py --dataset lora" >/dev/null; do sleep 120; done   # an earlier start of this script still tunes
+say "START (one worker per split; 2026-10-04)"
 waitlora
-$PY -u pool_check.py --dataset lora > pool_check_lora.log 2>&1 || { say "LoRa pool rule FAILED - see pool_check_lora.log; stopping"; exit 1; }
-cp pool_check_lora.log docs/pool_check_lora.txt
-commit "LoRa: de-duplicated tree complete, device-pool rule passes" docs/pool_check_lora.txt
+grep -q "POOL PASS" docs/pool_check_lora.txt || { say "no passing LoRa pool check in docs/pool_check_lora.txt; stopping"; exit 1; }
+SHIFTS=($($PY -c "import datasets as D; print(*D.default_shifts('lora'))"))
 for ph in 1 2; do
   for attempt in 1 2 3 4 5 6 7 8; do
     waitlora
-    "${N[@]}" $PY -u tune_phase$ph.py --dataset lora --go >> tune${ph}_lora.log 2>&1
+    for sh in $SHIFTS; do   # workers: disjoint splits, separate folders
+      "${N[@]}" $PY -u tune_phase$ph.py --dataset lora --shifts $sh --go >> tune${ph}_lora_s$sh.log 2>&1 &
+    done
+    wait
+    waitlora
+    "${N[@]}" $PY -u tune_phase$ph.py --dataset lora --go >> tune${ph}_lora.log 2>&1   # all splits: skips complete candidates, selects
     [ "$(selected_n lora $ph)" = "$(nshifts lora)" ] && break
     say "tune_phase$ph lora incomplete after attempt $attempt ($(selected_n lora $ph)/$(nshifts lora) splits); retrying"
     sleep 60

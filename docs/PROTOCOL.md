@@ -395,3 +395,10 @@ draft) are superseded; their code differs (see sections 12-15).
   commands as `run_all.sh` `final()`), in parallel with Pycom/LoRa tuning.
   `run_all.sh` v2 waits for it and then skips every complete WiSig run. The
   WiSig tuned pilot was repeated with the current code (22:19).
+- **LoRa tuning with one worker per split (author's decision, 2026-10-04).**
+  To save time, `run_lora_parallel.sh` runs `tune_phase{1,2}.py --dataset lora
+  --shifts S` for the five splits at once (disjoint splits, separate folders),
+  then one run over all splits that skips every complete candidate and makes
+  the selection. Same grid, seeds and code; results do not depend on the
+  order. The candidate running when the single-process tuning was stopped
+  (split 0, lambda 0.5, T 0.1) is kept as `*.failedN` and repeated.
