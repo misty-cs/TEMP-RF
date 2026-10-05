@@ -402,3 +402,9 @@ draft) are superseded; their code differs (see sections 12-15).
   the selection. Same grid, seeds and code; results do not depend on the
   order. The candidate running when the single-process tuning was stopped
   (split 0, lambda 0.5, T 0.1) is kept as `*.failedN` and repeated.
+- **Load governor (author's standing approval, 2026-10-05).** The Mac thrashed
+  with seven training jobs (load 66, swap 12 GB; almost no progress for 8 h).
+  `tools/governor.py` keeps at most four training jobs running and pauses the
+  others with SIGSTOP/SIGCONT (no work lost); Pycom/WiSig jobs first, then the
+  LoRa job whose current candidate has run longest. Run control only; results
+  do not depend on it. Log: `tools/governor.log`.
