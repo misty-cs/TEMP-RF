@@ -408,12 +408,22 @@ draft) are superseded; their code differs (see sections 12-15).
   others with SIGSTOP/SIGCONT (no work lost); Pycom/WiSig jobs first, then the
   LoRa job whose current candidate has run longest. Run control only; results
   do not depend on it. Log: `tools/governor.log`.
-- **Reduced final stage for the ICC deadline (author's decision, 2026-10-05).**
-  Stage A: final runs with seeds 42, 7, 13 for every split of every dataset,
-  and the joint-training control with seed 42 for every split (instead of five
-  seeds); then the 3-seed aggregation (`docs/results_3seeds/`, made from
-  `res_3seeds/`, links to exactly these runs). Stage B, if time allows: seeds
-  21 and 100, then the 5-seed aggregation (`docs/results_5seeds/`). WiSig has
-  all five seeds already; its joint runs shift0 seeds 42 and 7 were complete
-  when the five-seed joint job was stopped (seed 7 is kept but not used in
-  the 3-seed summary; the stopped seed-13 run is incomplete and not used).
+- **Final stage in two parts for the ICC deadline (author's decision,
+  2026-10-05).** Stage A: final runs with seeds 42, 7, 13 for every split of
+  every dataset, and the joint-training control with the same seeds (the joint
+  control runs on split 0 only, by design of `main.py`); then the 3-seed
+  aggregation (`docs/results_3seeds/`, made from `res_3seeds/` and
+  `res_joint_3seeds/`, relative links to exactly these runs, because
+  `aggregate.py` uses every run under its root). Stage B: seeds 21 and 100
+  (+ joint control), then the 5-seed aggregation (`docs/results_5seeds/`). The
+  full protocol (five seeds) is unchanged; only the order is. Note: a WiSig
+  joint job was stopped on 2026-10-05 while running split 0 seed 13; that
+  incomplete run is kept as `*.failedN` and repeated. (An earlier version of
+  this entry reduced the joint control to seed 42; that was withdrawn the same
+  day, before any run used it, after checking that the joint control is only
+  five runs per dataset.)
+- **Run control v3 (2026-10-05).** `run_all.sh` v3 runs one pipeline per
+  dataset (its tuning complete -> tuned pilot gate -> stage A), each with one
+  `main.py` worker per split (and per seed for the joint control), so a dataset
+  does not wait for the tuning of another. The governor gives LoRa (the
+  critical path) up to three of its four slots.

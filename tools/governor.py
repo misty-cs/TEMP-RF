@@ -6,14 +6,16 @@ the rest with SIGSTOP (no work is lost; SIGCONT resumes exactly where the job
 stopped). Results do not depend on it: jobs are seeded and deterministic.
 
 A training job = a top-level tune_phase1.py / tune_phase2.py / main.py process
-with all its descendants. Priority: Pycom/WiSig jobs first, then LoRa jobs
-whose current candidate has run longest (nearly finished work is not paused).
+with all its descendants. Priority (2026-10-05): LoRa is the critical path, so up to
+LORA_SLOTS LoRa jobs first, then the others; within a group the job whose current
+candidate has run longest first (nearly finished work is not paused).
 
-    python tools/governor.py [MAX_ACTIVE]      # default 4; log: tools/governor.log
+    python tools/governor.py [MAX_ACTIVE [LORA_SLOTS]]   # default 4 3; log: tools/governor.log
 """
 import os, re, signal, subprocess, sys, time
 
 MAX_ACTIVE = int(sys.argv[1]) if len(sys.argv) > 1 else 4
+LORA_SLOTS = int(sys.argv[2]) if len(sys.argv) > 2 else 3
 LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'governor.log')
 JOB = re.compile(r'python[\d.]*\s+-u\s+(tune_phase[12]\.py|main\.py)\s', re.I)
 
@@ -58,9 +60,12 @@ def jobs(procs):
         cmd = procs[p]['cmd']; desc = descendants(procs, p)
         youngest = min([procs[q]['etime'] for q in desc] or [procs[p]['etime']])
         lora = '--dataset lora' in cmd
-        J.append(dict(pid=p, pids=[p] + desc, cmd=cmd, lora=lora,
-                      key=(1 if lora else 0, -youngest)))   # non-LoRa first; then the longest-running candidate
-    return sorted(J, key=lambda j: j['key'])
+        J.append(dict(pid=p, pids=[p] + desc, cmd=cmd, lora=lora, age=youngest))
+    # LoRa is the critical path: up to LORA_SLOTS LoRa jobs first (longest-running candidate
+    # first, so nearly finished work is not paused), then the other jobs, then remaining LoRa
+    lo = sorted([j for j in J if j['lora']], key=lambda j: -j['age'])
+    ot = sorted([j for j in J if not j['lora']], key=lambda j: -j['age'])
+    return lo[:LORA_SLOTS] + ot + lo[LORA_SLOTS:]
 
 
 def send(job, sig):
