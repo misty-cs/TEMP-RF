@@ -85,16 +85,46 @@ for ds in wisig pycom lora; do runs $ds res_pilot_tuned 1 --shifts 0 --seeds 42 
 commit "Tuned pilots (split 0, seed 42): all audits pass"
 
 say "FINAL RUNS"
-final() {   # $1 dataset: seed by seed (complete seeds cover all splits early), then repeat until complete
-  want=$(( $(nshifts $1) * 5 ))
-  while pgrep -f run_wisig_early.sh >/dev/null; do sleep 300; done   # WiSig finals started early (PROTOCOL 16.1)
-  for s in 42 7 13 21 100; do waitdata $1; "${N[@]}" $PY -u main.py --dataset $1 --root res --seeds $s --go >> res_$1.log 2>&1; done
-  runs $1 res $want || say "final $1 incomplete ($(ok_runs res $1)/$want)"
-  for attempt in 1 2 3; do waitdata $1; "${N[@]}" $PY -u main.py --dataset $1 --joint --go >> res_joint_$1.log 2>&1; done
-  say "final $1 done ($(ok_runs res $1)/$want audited runs)"
+# Stage A (2026-10-05, PROTOCOL 16.1): seeds 42, 7, 13 + joint control (seed 42,
+# every split) for all datasets, then the 3-seed aggregation (the ICC results).
+# Stage B: seeds 21 and 100, then the 5-seed aggregation.
+final_seeds() {   # $1 dataset, then seeds: seed by seed, then repeat until complete
+  ds=$1; shift; want=$(( $(nshifts $ds) * $# ))
+  for s in "$@"; do waitdata $ds; "${N[@]}" $PY -u main.py --dataset $ds --root res --seeds $s --go >> res_$ds.log 2>&1; done
+  runs $ds res $want --seeds "$@" || say "final $ds seeds $* incomplete"
 }
-final wisig & final pycom & final lora & wait
-commit "Final runs: WiSig, Pycom, LoRa (all splits x 5 seeds + joint control)"
+stageA() {
+  while pgrep -f run_wisig_joint.sh >/dev/null; do sleep 300; done   # WiSig joint (seed 42) started early
+  final_seeds $1 42 7 13
+  for attempt in 1 2 3; do waitdata $1; "${N[@]}" $PY -u main.py --dataset $1 --joint --seeds 42 --go >> res_joint_$1.log 2>&1; done
+  say "final $1 stage A done (seeds 42 7 13 + joint seed 42)"
+}
+snapshot() {   # $1 name, then seeds: aggregate only these seeds (aggregate.py uses every run under
+               # its root, so res_<name>/ holds relative links to the selected runs; nothing is copied)
+  name=$1; shift; R=res_$name; J=res_joint_$name
+  for r in $R $J; do [ -e $r ] && { k=1; while [ -e $r.old$k ]; do k=$((k+1)); done; mv $r $r.old$k; }; done
+  for t in wisig pycom lora; do
+    for d in res/$t/shift* res_joint/$t/shift*; do
+      [ -d "$d" ] || continue
+      dst=${d/#res_joint/$J}; dst=${dst/#res\//$R/}
+      seeds=("$@"); [[ $d == res_joint/* ]] && seeds=(42)     # joint control: seed 42 only
+      for sd in $seeds; do [ -d $d/seed$sd ] && { mkdir -p $dst; ln -s ../../../$d/seed$sd $dst/seed$sd; }; done
+    done
+  done
+  $PY -u aggregate.py --tags wisig pycom lora --root $R --seeds "$@" > aggregate_$name.log 2>&1
+  mkdir -p docs/results_$name; cp aggregate_$name.log docs/results_$name/aggregate.txt
+  cp $R/PRIMARY_*.md docs/results_$name/ 2>/dev/null
+  for t in wisig pycom lora; do cp $R/$t/SUMMARY.md docs/results_$name/SUMMARY_$t.md 2>/dev/null; done
+}
+stageA wisig & stageA pycom & stageA lora & wait
+commit "Final runs stage A: WiSig, Pycom, LoRa (all splits x seeds 42, 7, 13 + joint seed 42)"
+snapshot 3seeds 42 7 13
+commit "Aggregated results, 3 seeds (docs/results_3seeds)"
+say "STAGE A DONE (3-seed results)"
+final_seeds wisig 42 7 13 21 100 & final_seeds pycom 42 7 13 21 100 & final_seeds lora 42 7 13 21 100 & wait
+commit "Final runs stage B: seeds 21, 100"
 $PY -u aggregate.py --tags wisig pycom lora --root res > aggregate_final.log 2>&1
-commit "Aggregated final results (res/*/SUMMARY.md, res/PRIMARY_*)"
+mkdir -p docs/results_5seeds; cp aggregate_final.log docs/results_5seeds/aggregate.txt; cp res/PRIMARY_*.md docs/results_5seeds/ 2>/dev/null
+for t in wisig pycom lora; do cp res/$t/SUMMARY.md docs/results_5seeds/SUMMARY_$t.md 2>/dev/null; done
+commit "Aggregated final results, 5 seeds (res/*/SUMMARY.md, res/PRIMARY_*, docs/results_5seeds)"
 say "ALL DONE"

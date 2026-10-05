@@ -408,3 +408,12 @@ draft) are superseded; their code differs (see sections 12-15).
   others with SIGSTOP/SIGCONT (no work lost); Pycom/WiSig jobs first, then the
   LoRa job whose current candidate has run longest. Run control only; results
   do not depend on it. Log: `tools/governor.log`.
+- **Reduced final stage for the ICC deadline (author's decision, 2026-10-05).**
+  Stage A: final runs with seeds 42, 7, 13 for every split of every dataset,
+  and the joint-training control with seed 42 for every split (instead of five
+  seeds); then the 3-seed aggregation (`docs/results_3seeds/`, made from
+  `res_3seeds/`, links to exactly these runs). Stage B, if time allows: seeds
+  21 and 100, then the 5-seed aggregation (`docs/results_5seeds/`). WiSig has
+  all five seeds already; its joint runs shift0 seeds 42 and 7 were complete
+  when the five-seed joint job was stopped (seed 7 is kept but not used in
+  the 3-seed summary; the stopped seed-13 run is incomplete and not used).
