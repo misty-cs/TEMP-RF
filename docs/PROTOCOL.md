@@ -427,3 +427,5 @@ draft) are superseded; their code differs (see sections 12-15).
   `main.py` worker per split (and per seed for the joint control), so a dataset
   does not wait for the tuning of another. The governor gives LoRa (the
   critical path) up to three of its four slots.
+- **Governor, 2026-10-05 20:30:** LoRa (critical path) may use all four slots
+  (`tools/governor.py 4 4`); other jobs run whenever fewer than four LoRa jobs exist.
