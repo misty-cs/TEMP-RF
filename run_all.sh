@@ -115,8 +115,8 @@ pipeline() {   # $1 dataset: tuning -> pilot (gate) -> stage A
   runs $ds res_pilot_tuned 1 --shifts 0 --seeds 42 || { say "tuned pilot $ds FAILED - no final runs for $ds"; return 1; }
   commit "Tuned pilot $ds (split 0, seed 42): audit passes" res_pilot_tuned/$ds
   final_seeds $ds 42 7 13
-  joint_seeds $ds 42 7 13
-  commit "Final runs stage A: $ds (all splits x seeds 42, 7, 13 + joint control seeds 42, 7, 13)" res/$ds res_joint/$ds
+  [ $ds = wisig ] && joint_seeds $ds 42 7 13     # Pycom/LoRa joint control moved to stage B (2026-10-06)
+  commit "Final runs stage A: $ds (all splits x seeds 42, 7, 13)" res/$ds res_joint/$ds
   say "final $ds stage A done ($(ok_runs res $ds) audited runs)"
 }
 snapshot() {   # $1 name, then seeds: aggregate only these seeds (aggregate.py uses every run under
@@ -140,7 +140,8 @@ pipeline wisig & pipeline pycom & pipeline lora & wait
 snapshot 3seeds 42 7 13
 commit "Aggregated results, 3 seeds (docs/results_3seeds, res_3seeds)" docs/results_3seeds res_3seeds res_joint_3seeds
 say "STAGE A DONE (3-seed results: docs/results_3seeds)"
-for ds in wisig pycom lora; do (final_seeds $ds 42 7 13 21 100; joint_seeds $ds 21 100) & done; wait
+(final_seeds wisig 42 7 13 21 100; joint_seeds wisig 21 100) &
+for ds in pycom lora; do (final_seeds $ds 42 7 13 21 100; joint_seeds $ds 42 7 13 21 100) & done; wait
 commit "Final runs stage B: seeds 21, 100 (+ joint control)" res res_joint
 $PY -u aggregate.py --tags wisig pycom lora --root res > aggregate_final.log 2>&1
 mkdir -p docs/results_5seeds; cp aggregate_final.log docs/results_5seeds/aggregate.txt; cp res/PRIMARY_*.md docs/results_5seeds/ 2>/dev/null

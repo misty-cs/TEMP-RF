@@ -429,3 +429,7 @@ draft) are superseded; their code differs (see sections 12-15).
   critical path) up to three of its four slots.
 - **Governor, 2026-10-05 20:30:** LoRa (critical path) may use all four slots
   (`tools/governor.py 4 4`); other jobs run whenever fewer than four LoRa jobs exist.
+- **2026-10-06 (author's decision):** the Pycom and LoRa joint-training control
+  moves from stage A to stage B (all five seeds there), to have the 3-seed
+  results about 8 h earlier. The 3-seed summary therefore has the joint control
+  for WiSig only. Order only; no result changes.
