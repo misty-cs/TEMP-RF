@@ -434,3 +434,7 @@ draft) are superseded; their code differs (see sections 12-15).
   results about 8 h earlier. The 3-seed summary therefore has the joint control
   for WiSig only. Order only; no result changes.
 - **Governor, 2026-10-07 22:00:** back to `tools/governor.py 4 3` (Pycom Phase-2 tuning, a single serial process, would otherwise become the critical path).
+- **Logs in the repository (2026-10-08):** top-level logs are excluded by
+  `.gitignore` (`*.log`), so `tools/collect_logs.sh` copies the run-control,
+  tuning, pool-check, final-run and governor logs to `docs/logs/*.txt`. It is
+  run before every push (first snapshot 2026-10-08).

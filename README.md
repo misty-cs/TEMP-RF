@@ -43,6 +43,7 @@ Single steps: `python main.py --dataset wisig` prints the plan; `--go` runs.
 | `docs/FAIRNESS.md` | what every decision rule uses and how it rejects |
 | `docs/METHODS_HISTORY.md` | decision log: how every value was found |
 | `docs/review/` | external reviews of the code and protocol |
+| `docs/logs/` | run-control, tuning, pool-check, final-run and scheduler logs (`tools/collect_logs.sh`) |
 | `explore/` | exploratory analyses (disclosed; not confirmatory) |
 | `res_tune/<dataset>/` | tuning: every candidate, its score and the selection per split |
 | `res_pilot_tuned/`, `res/`, `res_joint/` | pilots and final runs: `common_eval.json`, `audit.json`, manifests |
