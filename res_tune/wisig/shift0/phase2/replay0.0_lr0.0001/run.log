@@ -1,0 +1,265 @@
+
+==============================================================
+  PHASE 2 — Sequential fine-tuning
+  Days      : [2]
+  Devices   : all_known_ids=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  (12 classes)
+  always_reinit : False
+==============================================================
+
+### Phase 2  started at Fri Oct  2 00:48:23 2026
+### finetune_days=[2]  ft_n_train=150/class
+### always_reinit=False
+
+──────────────────────────────────────────────────────────────
+  Fine-tune step: model from Day 1 → target Day 2
+──────────────────────────────────────────────────────────────
+[data_utils] loading WiSig full pickle: dataset_2021_03_08_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_01_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_15_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_23_node24-16.pkl
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: divide by zero encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: overflow encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: invalid value encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: divide by zero encountered in matmul
+  S = R @ R.T
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: overflow encountered in matmul
+  S = R @ R.T
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: invalid value encountered in matmul
+  S = R @ R.T
+  WiSig full: day=2 role=all X=(9360, 256, 2) bursts=8382
+### day 2: train 1524, group-disjoint val 276, held-out 720 (capture split)
+  WiSig full: day=1 role=all X=(9360, 256, 2) bursts=8697
+  [replay] day 1: 6526 of 9360 slices (Phase-1 training groups)
+
+[Z-score] Fitting normalisation on target-day train data...
+
+[Stage 0] Loading pretrained weights from res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/phase1_df_d1.keras...
+  Loading pretrained model from:
+  res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/phase1_df_d1.keras
+  Loaded via load_model  (output shape: (None, 12))
+
+[Stage 0.5] Adapting BN statistics to target domain...
+Building model: DF  inp_shape=(256, 2)  num_class=12  classification=True  activation=elu  dropout_conv=0.3  dropout_fc=0.4  l2_reg=0.0001  l2_norm_emb=True
+  Weight transfer: 19 layers copied, 29 frozen (BN trainable).
+[tta_bn] Adapting BN stats on 1524 samples (3 passes) ...
+[tta_bn] BN adaptation complete.
+  BN stats transferred back to reference model.
+
+[Stage 1] Head warm-up: frozen backbone, plain CE loss...
+Building model: DF  inp_shape=(256, 2)  num_class=12  classification=True  activation=elu  dropout_conv=0.3  dropout_fc=0.4  l2_reg=0.0001  l2_norm_emb=True
+  Weight transfer: 19 layers copied, 29 frozen (BN trainable).
+2026-10-02 00:48:26.985941: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch   1/50  ce=1.7394  val_acc=0.7862
+  Stage1 Epoch   2/50  ce=1.4867  val_acc=0.7935
+  Stage1 Epoch   3/50  ce=1.3421  val_acc=0.8043
+2026-10-02 00:48:32.856543: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch   4/50  ce=1.2149  val_acc=0.8333
+  Stage1 Epoch   5/50  ce=1.1234  val_acc=0.8551
+  Stage1 Epoch   6/50  ce=1.0377  val_acc=0.8732
+2026-10-02 00:48:38.548848: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch   7/50  ce=0.9510  val_acc=0.8877
+  Stage1 Epoch   8/50  ce=0.9423  val_acc=0.8949
+  Stage1 Epoch   9/50  ce=0.8666  val_acc=0.9022
+2026-10-02 00:48:44.230312: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  10/50  ce=0.8612  val_acc=0.9130
+  Stage1 Epoch  11/50  ce=0.8376  val_acc=0.9167
+  Stage1 Epoch  12/50  ce=0.8044  val_acc=0.9130
+2026-10-02 00:48:49.857096: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  13/50  ce=0.7987  val_acc=0.9094
+  Stage1 Epoch  14/50  ce=0.8023  val_acc=0.9130
+  Stage1 Epoch  15/50  ce=0.7936  val_acc=0.9130
+2026-10-02 00:48:55.476646: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  16/50  ce=0.7796  val_acc=0.9130
+  Stage1 Epoch  17/50  ce=0.8046  val_acc=0.9130
+  Stage1 Epoch  18/50  ce=0.7707  val_acc=0.9094
+2026-10-02 00:49:01.084586: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  19/50  ce=0.7591  val_acc=0.9130
+  Stage1 Epoch  20/50  ce=0.7530  val_acc=0.9094
+  Stage1 Epoch  21/50  ce=0.7404  val_acc=0.9130
+2026-10-02 00:49:06.700277: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  22/50  ce=0.7315  val_acc=0.9167
+  Stage1 Epoch  23/50  ce=0.7249  val_acc=0.9167
+  Stage1 Epoch  24/50  ce=0.7333  val_acc=0.9167
+2026-10-02 00:49:12.329623: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  25/50  ce=0.7212  val_acc=0.9167
+  Stage1 Epoch  26/50  ce=0.7504  val_acc=0.9167
+  Stage1 Epoch  27/50  ce=0.7128  val_acc=0.9239
+2026-10-02 00:49:17.959881: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  28/50  ce=0.6928  val_acc=0.9239
+  Stage1 Epoch  29/50  ce=0.7075  val_acc=0.9203
+  Stage1 Epoch  30/50  ce=0.7033  val_acc=0.9203
+2026-10-02 00:49:23.579392: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  31/50  ce=0.6952  val_acc=0.9275
+  Stage1 Epoch  32/50  ce=0.7011  val_acc=0.9203
+  Stage1 Epoch  33/50  ce=0.6938  val_acc=0.9239
+2026-10-02 00:49:29.220686: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  34/50  ce=0.6967  val_acc=0.9312
+  Stage1 Epoch  35/50  ce=0.6713  val_acc=0.9239
+  Stage1 Epoch  36/50  ce=0.7005  val_acc=0.9275
+2026-10-02 00:49:34.860321: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  37/50  ce=0.6734  val_acc=0.9203
+  Stage1 Epoch  38/50  ce=0.6555  val_acc=0.9239
+  Stage1 Epoch  39/50  ce=0.6672  val_acc=0.9239
+2026-10-02 00:49:40.513368: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  40/50  ce=0.6789  val_acc=0.9239
+  Stage1 Epoch  41/50  ce=0.6575  val_acc=0.9203
+  Stage1 Epoch  42/50  ce=0.6803  val_acc=0.9203
+2026-10-02 00:49:46.139837: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  43/50  ce=0.6754  val_acc=0.9239
+  Stage1 Epoch  44/50  ce=0.6775  val_acc=0.9203
+  Stage1 Epoch  45/50  ce=0.6753  val_acc=0.9312
+2026-10-02 00:49:51.789978: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  46/50  ce=0.6587  val_acc=0.9239
+  Stage1 Epoch  47/50  ce=0.6682  val_acc=0.9239
+  Stage1 Epoch  48/50  ce=0.6542  val_acc=0.9239
+2026-10-02 00:49:57.445626: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage1 Epoch  49/50  ce=0.6792  val_acc=0.9239
+  Stage1 Epoch  50/50  ce=0.6577  val_acc=0.9275
+  [Stage 1] Best weights restored  val_acc=0.9312
+
+[Stage 2] Full fine-tuning (CE + SupCon alignment)...
+  Computing source centroids for SupCon alignment...
+  Source centroids computed for 12 classes.
+2026-10-02 00:50:04.108767: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch   1/80  loss=0.6879  val_acc=0.9239  lr=1.00e-04
+  Stage2 Epoch   2/80  loss=0.6358  val_acc=0.9420  lr=9.99e-05
+2026-10-02 00:50:12.056306: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch   3/80  loss=0.6063  val_acc=0.9275  lr=9.97e-05
+  Stage2 Epoch   4/80  loss=0.5876  val_acc=0.9348  lr=9.94e-05
+2026-10-02 00:50:19.762550: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch   5/80  loss=0.5707  val_acc=0.9275  lr=9.91e-05
+  Stage2 Epoch   6/80  loss=0.5302  val_acc=0.9312  lr=9.86e-05
+2026-10-02 00:50:27.442066: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch   7/80  loss=0.5363  val_acc=0.9420  lr=9.81e-05
+  Stage2 Epoch   8/80  loss=0.5245  val_acc=0.9529  lr=9.76e-05
+2026-10-02 00:50:35.178662: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch   9/80  loss=0.5122  val_acc=0.9601  lr=9.69e-05
+  Stage2 Epoch  10/80  loss=0.5136  val_acc=0.9565  lr=9.62e-05
+2026-10-02 00:50:42.813971: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  11/80  loss=0.4997  val_acc=0.9674  lr=9.54e-05
+  Stage2 Epoch  12/80  loss=0.4751  val_acc=0.9819  lr=9.46e-05
+2026-10-02 00:50:50.471632: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  13/80  loss=0.4835  val_acc=0.9855  lr=9.37e-05
+  Stage2 Epoch  14/80  loss=0.4860  val_acc=0.9855  lr=9.27e-05
+2026-10-02 00:50:58.132649: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  15/80  loss=0.4461  val_acc=0.9855  lr=9.16e-05
+  Stage2 Epoch  16/80  loss=0.4724  val_acc=0.9855  lr=9.05e-05
+2026-10-02 00:51:05.817042: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  17/80  loss=0.4482  val_acc=0.9783  lr=8.93e-05
+  Stage2 Epoch  18/80  loss=0.4515  val_acc=0.9819  lr=8.81e-05
+2026-10-02 00:51:13.476243: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  19/80  loss=0.4389  val_acc=0.9855  lr=8.68e-05
+  Stage2 Epoch  20/80  loss=0.4525  val_acc=0.9855  lr=8.54e-05
+2026-10-02 00:51:21.118791: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  21/80  loss=0.4408  val_acc=0.9855  lr=8.40e-05
+  Stage2 Epoch  22/80  loss=0.4278  val_acc=0.9964  lr=8.25e-05
+2026-10-02 00:51:28.853866: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  23/80  loss=0.4271  val_acc=0.9928  lr=8.10e-05
+  Stage2 Epoch  24/80  loss=0.4274  val_acc=0.9855  lr=7.95e-05
+2026-10-02 00:51:36.557778: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  25/80  loss=0.4174  val_acc=0.9964  lr=7.78e-05
+  Stage2 Epoch  26/80  loss=0.4172  val_acc=0.9964  lr=7.62e-05
+2026-10-02 00:51:44.313979: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  27/80  loss=0.4119  val_acc=0.9819  lr=7.45e-05
+  Stage2 Epoch  28/80  loss=0.4155  val_acc=0.9855  lr=7.28e-05
+2026-10-02 00:51:51.994554: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  29/80  loss=0.4044  val_acc=0.9964  lr=7.10e-05
+  Stage2 Epoch  30/80  loss=0.3969  val_acc=0.9964  lr=6.92e-05
+2026-10-02 00:51:59.735567: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  31/80  loss=0.4240  val_acc=0.9928  lr=6.74e-05
+  Stage2 Epoch  32/80  loss=0.3988  val_acc=0.9964  lr=6.55e-05
+2026-10-02 00:52:07.433835: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  33/80  loss=0.4036  val_acc=0.9964  lr=6.37e-05
+  Stage2 Epoch  34/80  loss=0.4146  val_acc=0.9964  lr=6.18e-05
+2026-10-02 00:52:15.095521: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  35/80  loss=0.3982  val_acc=0.9928  lr=5.98e-05
+  Stage2 Epoch  36/80  loss=0.4083  val_acc=0.9964  lr=5.79e-05
+2026-10-02 00:52:22.860255: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  37/80  loss=0.4078  val_acc=0.9928  lr=5.60e-05
+  Stage2 Epoch  38/80  loss=0.4000  val_acc=0.9928  lr=5.40e-05
+2026-10-02 00:52:30.865301: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  39/80  loss=0.4043  val_acc=0.9964  lr=5.20e-05
+  Stage2 Epoch  40/80  loss=0.3869  val_acc=0.9928  lr=5.01e-05
+2026-10-02 00:52:38.585824: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  41/80  loss=0.3963  val_acc=0.9928  lr=4.81e-05
+  Stage2 Epoch  42/80  loss=0.3859  val_acc=0.9964  lr=4.62e-05
+2026-10-02 00:52:47.061877: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  43/80  loss=0.3874  val_acc=0.9964  lr=4.42e-05
+  Stage2 Epoch  44/80  loss=0.3843  val_acc=0.9964  lr=4.23e-05
+2026-10-02 00:52:54.938882: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  45/80  loss=0.3867  val_acc=0.9928  lr=4.03e-05
+  Stage2 Epoch  46/80  loss=0.3880  val_acc=0.9964  lr=3.84e-05
+2026-10-02 00:53:02.805874: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+  Stage2 Epoch  47/80  loss=0.3980  val_acc=0.9964  lr=3.65e-05
+  [Stage 2] Early stop  best_val_acc=0.9964
+  [Stage 2] Best weights restored  val_acc=0.9964
+  Saved fine-tuned model to res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/tune_model_12.keras
+/Users/misty/Downloads/temp-rf-code-1/selection.py:28: RuntimeWarning: divide by zero encountered in matmul
+  D = 1 - l2(emb_sel) @ C.T
+/Users/misty/Downloads/temp-rf-code-1/selection.py:28: RuntimeWarning: overflow encountered in matmul
+  D = 1 - l2(emb_sel) @ C.T
+/Users/misty/Downloads/temp-rf-code-1/selection.py:28: RuntimeWarning: invalid value encountered in matmul
+  D = 1 - l2(emb_sel) @ C.T
+
+Test run #1
+[1m1/6[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m1s[0m 275ms/step - accuracy: 1.0000 - loss: 0.2179[1m6/6[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 10ms/step - accuracy: 0.9986 - loss: 0.2246 
+  Softmax accuracy: 0.9986
+[tta_bn] Adapting BN stats on 720 samples (2 passes) ...
+[tta_bn] BN adaptation complete.
+[1m1/6[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m0s[0m 18ms/step - accuracy: 1.0000 - loss: 0.2181[1m6/6[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 10ms/step - accuracy: 0.9992 - loss: 0.2221[1m6/6[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 11ms/step - accuracy: 0.9986 - loss: 0.2249
+  BN-adapted accuracy: 0.9986  Δ=+0.0000
+
+[whitening] Extracting source embeddings ...
+WARNING:tensorflow:5 out of the last 16 calls to <function TensorFlowTrainer.make_predict_function.<locals>.one_step_on_data_distributed at 0x121af18a0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+[whitening] Extracting target embeddings ...
+
+[whitening] Softmax baseline (no whitening) ...
+/Users/misty/Downloads/temp-rf-code-1/embedding_whitening.py:351: RuntimeWarning: divide by zero encountered in matmul
+  sim   = emb_tgt @ emb_src.T                     # (M, N)
+/Users/misty/Downloads/temp-rf-code-1/embedding_whitening.py:351: RuntimeWarning: overflow encountered in matmul
+  sim   = emb_tgt @ emb_src.T                     # (M, N)
+/Users/misty/Downloads/temp-rf-code-1/embedding_whitening.py:351: RuntimeWarning: invalid value encountered in matmul
+  sim   = emb_tgt @ emb_src.T                     # (M, N)
+
+[whitening] Strategy 1 — mean-shift ...
+[whitening] Mean-shift magnitude: 0.00532
+
+[whitening] Labelled whitening skipped: no separate adaptation set.
+
+────────────────────────────────────────────────────
+  Method                          kNN Acc
+────────────────────────────────────────────────────
+  Softmax (no whitening)           0.9986
+  kNN baseline (no whitening)      1.0000
+  Mean-shift (no labels)           1.0000  Δ=+0.0000
+  Per-class (few labels)              nan  Δ=+nan
+  Affine (few labels)                 nan  Δ=+nan
+────────────────────────────────────────────────────
+
+/Users/misty/Downloads/temp-rf-code-1/finetune.py:710: RuntimeWarning: divide by zero encountered in matmul
+  preds   = classes[np.argmax(emb_agg @ centroids.T, axis=1)]
+/Users/misty/Downloads/temp-rf-code-1/finetune.py:710: RuntimeWarning: overflow encountered in matmul
+  preds   = classes[np.argmax(emb_agg @ centroids.T, axis=1)]
+/Users/misty/Downloads/temp-rf-code-1/finetune.py:710: RuntimeWarning: invalid value encountered in matmul
+  preds   = classes[np.argmax(emb_agg @ centroids.T, axis=1)]
+  proto_agg1=0.9972
+  proto_agg5=1.0000
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/utils/extmath.py:227: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/utils/extmath.py:227: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/utils/extmath.py:227: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  Silhouette: 0.9652
+[whitening] Centroids saved → res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/ft_centroids_phase2_d2.npz
+### day 2: best_val_acc=0.9964  val_sel=0.9980  val_loco=0.9995  (replay=0.0, lr2=0.0001)
+  CNN z-score stats saved → res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/phase2_norm_d2.npz
+  Model saved → res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/phase2_ft_d2.keras
+
+  day=2  softmax=0.9986  bn_adapted=0.9986  proto_agg1=0.9972  xs_centroid_val=nan  time=283s
+  [replay] next step replays 1524 training slices of day 2
+
+### Phase 2 complete.  Final model → res_tune/wisig/shift0/phase2/replay0.0_lr0.0001/modelDir/phase2_ft_d2.keras

@@ -1,0 +1,23 @@
+
+==============================================================
+  PHASE 1 — Initial training on Day 1 (CE + SupCon)
+  Devices: all_known_ids = [0, 1, 2, 3, 5, 6, 7, 8, 14, 15, 16, 17, 18, 20, 21, 22]  (16 classes)
+  emb_size=128  supcon_lambda=1.0  T=0.05
+==============================================================
+
+[data_utils] raw load + groups  day=1  root=data/pycom_indoor/Day_1
+[unzip_dataset] No archives found under data/pycom_indoor/Day_1
+Traceback (most recent call last):
+  File "<string>", line 9, in <module>
+    r = run_phase1(cfg)
+  File "/Users/misty/Downloads/temp-rf-code-1/phase1_initial_training.py", line 227, in run_phase1
+    X_all_raw, y_all, g_all = load_day_raw_with_groups(
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^
+        cfg, day_id=cfg.init_day, device_ids=cfg.all_known_ids
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/misty/Downloads/temp-rf-code-1/data_utils.py", line 432, in load_day_raw_with_groups
+    (d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))),
+                ~~~~~~~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/pycom_indoor/Day_1'

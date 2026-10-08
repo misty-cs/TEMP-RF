@@ -43,6 +43,8 @@ Single steps: `python main.py --dataset wisig` prints the plan; `--go` runs.
 | `docs/FAIRNESS.md` | what every decision rule uses and how it rejects |
 | `docs/METHODS_HISTORY.md` | decision log: how every value was found |
 | `docs/review/` | external reviews of the code and protocol |
+| `docs/TRACEABILITY.md` | **where every number of the paper comes from** (start here) |
+| `docs/ARTIFACTS.tsv` | size and SHA-256 of the large files not stored in git (models, banks, calibration) |
 | `docs/logs/` | run-control, tuning, pool-check, final-run and scheduler logs (`tools/collect_logs.sh`) |
 | `explore/` | exploratory analyses (disclosed; not confirmatory) |
 | `res_tune/<dataset>/` | tuning: every candidate, its score and the selection per split |

@@ -438,3 +438,9 @@ draft) are superseded; their code differs (see sections 12-15).
   `.gitignore` (`*.log`), so `tools/collect_logs.sh` copies the run-control,
   tuning, pool-check, final-run and governor logs to `docs/logs/*.txt`. It is
   run before every push (first snapshot 2026-10-08).
+- **Repository completeness (2026-10-08):** per-run logs, the selection tables
+  (`modelDir/phase3_selection.json`), the data-split group lists, normalization
+  statistics and Phase-2 centroids are now tracked; only trained models and
+  large arrays stay outside git, indexed with SHA-256 in `docs/ARTIFACTS.tsv`
+  (`tools/artifact_index.py`). `docs/TRACEABILITY.md` maps every paper element
+  to its source.

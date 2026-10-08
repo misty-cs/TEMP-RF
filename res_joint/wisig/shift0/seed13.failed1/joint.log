@@ -1,0 +1,38 @@
+
+==============================================================
+  PHASE 1 — Initial training on Day 1 (CE + SupCon)
+  Devices: all_known_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]  (12 classes)
+  emb_size=128  supcon_lambda=0.5  T=0.07
+==============================================================
+[data_utils] loading WiSig full pickle: dataset_2021_03_01_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_08_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_15_node24-16.pkl
+[data_utils] loading WiSig full pickle: dataset_2021_03_23_node24-16.pkl
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: divide by zero encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: overflow encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:159: RuntimeWarning: invalid value encountered in matmul
+  R = A - (A @ t)[:, None] * t[None, :]
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: divide by zero encountered in matmul
+  S = R @ R.T
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: overflow encountered in matmul
+  S = R @ R.T
+/Users/misty/Downloads/temp-rf-code-1/data_utils.py:161: RuntimeWarning: invalid value encountered in matmul
+  S = R @ R.T
+  WiSig full: day=1 role=all X=(9360, 256, 2) bursts=8697
+  capture ids in training set: 5967 distinct (cross-capture positives=False)
+  WiSig full: day=2 role=all X=(9360, 256, 2) bursts=8382
+  [joint] added Day 2: 1524 slices
+
+  X_tr=(8094, 256, 2)  X_val=(1373, 256, 2)  X_test=(1417, 256, 2)  NUM_CLASS=12
+  Norm stats saved → res_joint/wisig/shift0/seed13/modelDir/phase1_norm_d1.npz
+Building model: DF  inp_shape=(256, 2)  num_class=12  classification=True  activation=elu  dropout_conv=0.3  dropout_fc=0.4  l2_reg=0.0001  l2_norm_emb=True
+
+  Init probe: 3 restarts × 12 epochs each ...
+2026-10-05 01:03:20.637580: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+    restart 1/3: probe val_acc=0.7910
+Building model: DF  inp_shape=(256, 2)  num_class=12  classification=True  activation=elu  dropout_conv=0.3  dropout_fc=0.4  l2_reg=0.0001  l2_norm_emb=True
+2026-10-05 01:23:48.603167: E tensorflow/core/framework/node_def_util.cc:680] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+    restart 2/3: probe val_acc=0.5535
+Building model: DF  inp_shape=(256, 2)  num_class=12  classification=True  activation=elu  dropout_conv=0.3  dropout_fc=0.4  l2_reg=0.0001  l2_norm_emb=True
