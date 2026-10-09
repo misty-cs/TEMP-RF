@@ -1,0 +1,31 @@
+
+==============================================================
+  PHASE 2 — Sequential fine-tuning
+  Days      : [2, 3]
+  Devices   : all_known_ids=[0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17]  (16 classes)
+  always_reinit : False
+==============================================================
+
+### Phase 2  started at Sun Oct  4 13:22:28 2026
+### finetune_days=[2, 3]  ft_n_train=150/class
+### always_reinit=False
+
+──────────────────────────────────────────────────────────────
+  Fine-tune step: model from Day 1 → target Day 2
+──────────────────────────────────────────────────────────────
+
+[data_utils] raw load + groups  day=2  root=data/pycom_indoor/Day_2
+[unzip_dataset] No archives found under data/pycom_indoor/Day_2
+Traceback (most recent call last):
+  File "<string>", line 10, in <module>
+    run_phase2(cfg, R._resume_phase1(cfg))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/misty/Downloads/temp-rf-code-1/phase2_sequential_finetuning.py", line 113, in run_phase2
+    X_day, y_day, g_day = load_day_raw_with_groups(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~^
+        cfg, day_id=day, device_ids=ft_devices)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/misty/Downloads/temp-rf-code-1/data_utils.py", line 432, in load_day_raw_with_groups
+    (d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))),
+                ~~~~~~~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/pycom_indoor/Day_2'
