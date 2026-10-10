@@ -444,3 +444,4 @@ draft) are superseded; their code differs (see sections 12-15).
   large arrays stay outside git, indexed with SHA-256 in `docs/ARTIFACTS.tsv`
   (`tools/artifact_index.py`). `docs/TRACEABILITY.md` maps every paper element
   to its source.
+- **Governor order, 2026-10-10 01:30:** within LoRa and within the other jobs, the worker with the fewest completed final runs first, ties by the oldest worker. The earlier key (youngest child process) paused a run whenever it started its next step, so the single Pycom slot rotated between five workers and no Pycom run had finished after 16 h. Run control only.

@@ -6,9 +6,9 @@ the rest with SIGSTOP (no work is lost; SIGCONT resumes exactly where the job
 stopped). Results do not depend on it: jobs are seeded and deterministic.
 
 A training job = a top-level tune_phase1.py / tune_phase2.py / main.py process
-with all its descendants. Priority (2026-10-05): LoRa is the critical path, so up to
-LORA_SLOTS LoRa jobs first, then the others; within a group the job whose current
-candidate has run longest first (nearly finished work is not paused).
+with all its descendants. Priority: LoRa is the critical path, so up to LORA_SLOTS
+LoRa jobs first, then the others; within a group the worker with the fewest completed
+final runs first, ties by the oldest worker (stable; changed 2026-10-10).
 
     python tools/governor.py [MAX_ACTIVE [LORA_SLOTS]]   # default 4 3; log: tools/governor.log
 """
@@ -61,11 +61,31 @@ def jobs(procs):
         youngest = min([procs[q]['etime'] for q in desc] or [procs[p]['etime']])
         lora = '--dataset lora' in cmd
         J.append(dict(pid=p, pids=[p] + desc, cmd=cmd, lora=lora, age=youngest))
-    # LoRa is the critical path: up to LORA_SLOTS LoRa jobs first (longest-running candidate
-    # first, so nearly finished work is not paused), then the other jobs, then remaining LoRa
-    lo = sorted([j for j in J if j['lora']], key=lambda j: -j['age'])
-    ot = sorted([j for j in J if not j['lora']], key=lambda j: -j['age'])
+    # LoRa is the critical path: up to LORA_SLOTS LoRa jobs first, then the other jobs, then
+    # the remaining LoRa jobs. Within a group (2026-10-10): the worker with the fewest
+    # completed final runs first, ties by the oldest worker (stable order). The earlier key
+    # (youngest child process) demoted a run each time it started its next step, so the
+    # single Pycom slot rotated between workers and no Pycom run finished.
+    key = lambda j: (completed(j['cmd']), j['pid'])
+    lo = sorted([j for j in J if j['lora']], key=key)
+    ot = sorted([j for j in J if not j['lora']], key=key)
     return lo[:LORA_SLOTS] + ot + lo[LORA_SLOTS:]
+
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def completed(cmd):
+    """Number of audited runs of the split a main.py worker is responsible for."""
+    ds = re.search(r'--dataset (\w+)', cmd); sh = re.search(r'--shifts (\d+)', cmd)
+    root = re.search(r'--root (\S+)', cmd)
+    if not (ds and sh) or 'main.py' not in cmd:
+        return 0
+    d = os.path.join(ROOT, root.group(1) if root else 'res', ds.group(1), 'shift' + sh.group(1))
+    try:
+        return sum(os.path.exists(os.path.join(d, s, 'audit.json')) for s in os.listdir(d) if s.startswith('seed') and '.' not in s)
+    except FileNotFoundError:
+        return 0
 
 
 def send(job, sig):
