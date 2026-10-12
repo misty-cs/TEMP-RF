@@ -453,3 +453,4 @@ draft) are superseded; their code differs (see sections 12-15).
   `run_stageB.sh` then makes the 3-seed aggregation (same code as v3), Pycom stage B,
   the remaining joint controls and the 5-seed aggregation. Governor: 2 slots LoRa,
   2 slots others. Same commands; order only.
+- **2026-10-12 06:40:** the main process of `run_stageB.sh` had ended without a message (its LoRa block, PID 10013, kept running). Restarted as a continuation (`LORA_PID=10013`, fully detached): it waits for the running LoRa block instead of starting it again, then continues with the 3-seed aggregation etc.

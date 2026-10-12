@@ -55,10 +55,19 @@ snapshot() { name=$1; shift; R=res_$name; J=res_joint_$name
   cp $R/PRIMARY_*.md docs/results_$name/ 2>/dev/null
   for t in wisig pycom lora; do cp $R/$t/SUMMARY.md docs/results_$name/SUMMARY_$t.md 2>/dev/null; done; }
 
-say "START (LoRa stage B now, parallel to Pycom stage A)"
+say "START (LoRa stage B now, parallel to Pycom stage A)${LORA_PID:+ [continuation]}"
+if [ -n "$LORA_PID" ]; then   # continuation (2026-10-12): the LoRa block already runs as $LORA_PID
+  say "continuation: LoRa stage B already running as PID $LORA_PID"
+  ( while kill -0 $LORA_PID 2>/dev/null; do sleep 300; done
+    for attempt in 1 2 3; do final_seeds lora 42 7 13 21 100 && break; done
+    joint_seeds lora 42 7 13 21 100
+    commit "Final runs stage B: lora (seeds 21, 100) + joint control" res/lora res_joint/lora
+    say "lora stage B done" ) &
+else
 ( final_seeds lora 42 7 13 21 100; joint_seeds lora 42 7 13 21 100
   commit "Final runs stage B: lora (seeds 21, 100) + joint control" res/lora res_joint/lora
   say "lora stage B done" ) &
+fi
 LORA=$!
 # Pycom stage A is run by run_all.sh v3 (its pipeline subshell still runs); wait for it
 until [ "$(ok_runs res pycom)" -ge "$(( $(nshifts pycom) * 3 ))" ] && ! pgrep -f "main.py --dataset pycom --shifts [0-9]* --root res --seeds 42 7 13" >/dev/null; do sleep 300; done
