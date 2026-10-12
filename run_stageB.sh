@@ -72,14 +72,16 @@ fi
 LORA=$!
 # Pycom stage A is run by run_all.sh v3 (its pipeline subshell still runs); wait for it
 until [ "$(ok_runs res pycom)" -ge "$(( $(nshifts pycom) * 3 ))" ] && ! pgrep -f "main.py --dataset pycom --shifts [0-9]* --root res --seeds 42 7 13" >/dev/null; do sleep 300; done
+if [ -z "$SKIP_A" ]; then   # SKIP_A=1: the 3-seed aggregation is already done (continuation)
 commit "Final runs stage A: pycom (all splits x seeds 42, 7, 13)" res/pycom
 snapshot 3seeds 42 7 13
 commit "Aggregated results, 3 seeds (docs/results_3seeds, res_3seeds)" docs/results_3seeds res_3seeds res_joint_3seeds
 say "STAGE A DONE (3-seed results: docs/results_3seeds)"
+fi
 ( final_seeds pycom 42 7 13 21 100; joint_seeds pycom 42 7 13 21 100
   commit "Final runs stage B: pycom (seeds 21, 100) + joint control" res/pycom res_joint/pycom ) &
 PYC=$!
-joint_seeds wisig 21 100; commit "WiSig joint control seeds 21, 100" res_joint/wisig
+joint_seeds wisig 21 100; commit "WiSig joint control seeds 21, 100" res_joint/wisig   # skips complete runs
 wait $LORA $PYC
 $PY -u aggregate.py --tags wisig pycom lora --root res > aggregate_final.log 2>&1
 mkdir -p docs/results_5seeds; cp aggregate_final.log docs/results_5seeds/aggregate.txt; cp res/PRIMARY_*.md docs/results_5seeds/ 2>/dev/null
