@@ -5,6 +5,7 @@
 # Pycom stage A is complete, the 3-seed aggregation (same code as run_all.sh v3), then
 # Pycom stage B, the joint controls and the 5-seed aggregation. Same commands as v3.
 cd "$(dirname "$0")"
+setopt null_glob   # a pattern without matches (e.g. no Pycom joint runs yet) must not stop the script
 PY=${PYTHON:-/usr/local/bin/python3.13}
 N=(nice -n 10)
 LOG=run_all.log
