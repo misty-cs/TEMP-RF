@@ -1,0 +1,30 @@
+===== lora: 15 runs
+splits/seeds: {0: [7, 13, 42], 4: [7, 13, 42], 8: [7, 13, 42], 12: [7, 13, 42], 16: [7, 13, 42]}
+audit failures: none
+test-set descriptors (distinct): 1
+
+per split: closed / AUROC (mean over seeds) and max-min over seeds of AUROC
+ split  0 unk=[17, 18, 19, 20]: msp 0.64/0.51±0.03 | probe 0.64/0.60±0.05 | openma 0.63/0.69±0.11 | static 0.66/0.71±0.03 | knn 0.65/0.74±0.01 | temp_r 0.66/0.71±0.03 | raw_ce 0.59/0.59±0.01
+ split  4 unk=[0, 1, 2, 3]: msp 0.62/0.01±0.01 | probe 0.62/0.11±0.12 | openma 0.61/0.02±0.01 | static 0.61/0.09±0.04 | knn 0.60/0.14±0.06 | temp_r 0.61/0.12±0.06 | raw_ce 0.52/0.98±0.00
+ split  8 unk=[4, 5, 6, 7]: msp 0.61/0.27±0.01 | probe 0.59/0.27±0.01 | openma 0.59/0.60±0.05 | static 0.60/0.53±0.17 | knn 0.60/0.62±0.05 | temp_r 0.60/0.53±0.17 | raw_ce 0.51/0.78±0.01
+ split 12 unk=[9, 10, 11, 12]: msp 0.56/0.27±0.03 | probe 0.54/0.34±0.07 | openma 0.56/0.65±0.04 | static 0.58/0.37±0.03 | knn 0.59/0.53±0.08 | temp_r 0.58/0.37±0.03 | raw_ce 0.53/0.72±0.01
+ split 16 unk=[13, 14, 15, 16]: msp 0.68/0.64±0.01 | probe 0.68/0.68±0.07 | openma 0.67/0.76±0.03 | static 0.69/0.64±0.02 | knn 0.70/0.64±0.06 | temp_r 0.70/0.65±0.02 | raw_ce 0.62/0.48±0.01
+
+runs with AUROC < 0.5 per rule: {'msp': 10, 'probe': 9, 'static': 8, 'temp_rff': 8, 'knn': 4, 'raw_centroid': 3, 'openmax': 3} {'msp': [0, 4, 8, 12], 'probe': [4, 8, 12], 'static': [4, 8, 12], 'temp_rff': [4, 8, 12], 'knn': [4, 12], 'raw_centroid': [16], 'openmax': [4]}
+
+stages centroid acc mean: [0.621 0.627 0.627]  AUROC mean: [0.485 0.471 0.468]
+runs where Phase 2 lowers centroid acc by >0.02: 0 of 15
+few-shot structure: dict ['temp_rff', 'static', 'knn', 'static_window', 'knn_window']
+
+selected P/W/decay: [((None, 1, 1.0), 12), ((None, 2, 0.6), 2), ((None, 4, 1.0), 1)]
+ tuned accept msp          mean 0.445 min 0.040 max 0.998
+ tuned accept probe        mean 0.816 min 0.289 max 0.999
+ tuned accept openmax      mean 0.774 min 0.637 max 0.834
+ tuned accept static       mean 0.716 min 0.501 max 0.798
+ tuned accept knn          mean 0.719 min 0.562 max 0.797
+ tuned accept temp_rff     mean 0.727 min 0.501 max 0.920
+ tuned accept raw_centroid mean 0.696 min 0.405 max 0.776
+
+ISSUES: 2
+ - res/lora/shift0/seed42: static_window (W=1) != static
+ - res/lora/shift12/seed42: static_window (W=1) != static

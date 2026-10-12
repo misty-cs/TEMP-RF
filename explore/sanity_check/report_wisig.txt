@@ -1,0 +1,27 @@
+===== wisig: 20 runs
+splits/seeds: {0: [7, 13, 21, 42, 100], 4: [7, 13, 21, 42, 100], 8: [7, 13, 21, 42, 100], 12: [7, 13, 21, 42, 100]}
+audit failures: none
+test-set descriptors (distinct): 5
+
+per split: closed / AUROC (mean over seeds) and max-min over seeds of AUROC
+ split  0 unk=[12, 13, 14, 15]: msp 0.81/0.67±0.17 | probe 0.89/0.68±0.25 | openma 0.72/0.72±0.23 | static 0.86/0.75±0.20 | knn 0.91/0.84±0.15 | temp_r 0.90/0.83±0.23 | raw_ce 0.81/0.74±0.02
+ split  4 unk=[0, 1, 2, 3]: msp 0.79/0.68±0.16 | probe 0.82/0.68±0.25 | openma 0.78/0.68±0.28 | static 0.81/0.68±0.20 | knn 0.84/0.75±0.21 | temp_r 0.83/0.74±0.23 | raw_ce 0.79/0.48±0.02
+ split  8 unk=[4, 5, 6, 7]: msp 0.87/0.58±0.20 | probe 0.91/0.52±0.27 | openma 0.80/0.63±0.14 | static 0.89/0.73±0.21 | knn 0.92/0.76±0.08 | temp_r 0.91/0.77±0.08 | raw_ce 0.85/0.73±0.01
+ split 12 unk=[8, 9, 10, 11]: msp 0.91/0.77±0.14 | probe 0.92/0.73±0.27 | openma 0.90/0.76±0.24 | static 0.91/0.82±0.08 | knn 0.95/0.86±0.09 | temp_r 0.95/0.86±0.11 | raw_ce 0.95/0.65±0.01
+
+runs with AUROC < 0.5 per rule: {'raw_centroid': 5, 'probe': 3, 'msp': 1} {'raw_centroid': [4], 'probe': [8], 'msp': [8]}
+
+stages centroid acc mean: [0.741 0.869 0.869]  AUROC mean: [0.645 0.755 0.746]
+runs where Phase 2 lowers centroid acc by >0.02: 0 of 20
+few-shot structure: dict ['temp_rff', 'static', 'knn', 'static_window', 'knn_window']
+
+selected P/W/decay: [((None, 1, 1.0), 19), ((None, 3, 1.0), 1)]
+ tuned accept msp          mean 0.845 min 0.624 max 0.952
+ tuned accept probe        mean 0.832 min 0.601 max 0.948
+ tuned accept openmax      mean 0.717 min 0.535 max 0.840
+ tuned accept static       mean 0.880 min 0.653 max 0.985
+ tuned accept knn          mean 0.752 min 0.515 max 0.907
+ tuned accept temp_rff     mean 0.764 min 0.549 max 0.985
+ tuned accept raw_centroid mean 0.461 min 0.346 max 0.551
+
+ISSUES: 0
