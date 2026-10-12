@@ -9,7 +9,7 @@
 cd "$(dirname "$0")/.."
 LOG=tools/study_pause.log
 pids() {   # governor, schedulers, every training job and all its descendants
-  local roots=($(pgrep -f "tools/governor.py|run_all.sh|run_lora_parallel.sh|main.py --dataset|tune_phase[12].py"))
+  local roots=($(pgrep -f "tools/governor.py|run_all.sh|run_lora_parallel.sh|run_stageB.sh|main.py --dataset|tune_phase[12].py"))
   local all=($roots) todo=($roots) p c
   while (( ${#todo} )); do p=$todo[1]; todo=(${todo[2,-1]}); for c in $(pgrep -P $p); do all+=($c); todo+=($c); done; done
   print -l ${(u)all}

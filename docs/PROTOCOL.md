@@ -446,3 +446,10 @@ draft) are superseded; their code differs (see sections 12-15).
   to its source.
 - **Governor order, 2026-10-10 01:30:** within LoRa and within the other jobs, the worker with the fewest completed final runs first, ties by the oldest worker. The earlier key (youngest child process) paused a run whenever it started its next step, so the single Pycom slot rotated between five workers and no Pycom run had finished after 16 h. Run control only.
 - **Pause/resume (2026-10-10):** `tools/study_pause.sh stop|cont` freezes and continues the whole study (SIGSTOP/SIGCONT) for the author's travel; no work is lost.
+- **Stage B started early for LoRa (author's request, 2026-10-11 19:50):**
+  `run_stageB.sh` runs LoRa stage B (seeds 21, 100 + joint control) in parallel
+  with Pycom stage A. The parent shell of `run_all.sh` v3 is frozen (SIGSTOP) so that
+  it does not start a second stage B; its Pycom stage-A workers continue.
+  `run_stageB.sh` then makes the 3-seed aggregation (same code as v3), Pycom stage B,
+  the remaining joint controls and the 5-seed aggregation. Governor: 2 slots LoRa,
+  2 slots others. Same commands; order only.
