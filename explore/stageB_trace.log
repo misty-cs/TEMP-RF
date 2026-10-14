@@ -1,0 +1,137 @@
++./run_stageB.sh:7> dirname ./run_stageB.sh
++./run_stageB.sh:7> cd .
++./run_stageB.sh:8> PY=/usr/local/bin/python3.13 
++./run_stageB.sh:9> N=( nice -n 10 ) 
++./run_stageB.sh:10> LOG=run_all.log 
++./run_stageB.sh:58> say 'START (LoRa stage B now, parallel to Pycom stage A) [continuation]'
++say:0> date
++say:0> tee -a run_all.log
++say:0> echo '=== [stageB] START (LoRa stage B now, parallel to Pycom stage A) [continuation] Mon Oct 12 06:45:06 CDT 2026'
+=== [stageB] START (LoRa stage B now, parallel to Pycom stage A) [continuation] Mon Oct 12 06:45:06 CDT 2026
++./run_stageB.sh:59> [ -n 10013 ']'
++./run_stageB.sh:60> say 'continuation: LoRa stage B already running as PID 10013'
++say:0> date
++say:0> tee -a run_all.log
++say:0> echo '=== [stageB] continuation: LoRa stage B already running as PID 10013 Mon Oct 12 06:45:06 CDT 2026'
+=== [stageB] continuation: LoRa stage B already running as PID 10013 Mon Oct 12 06:45:06 CDT 2026
++./run_stageB.sh:71> LORA=25526 
++./run_stageB.sh:61> kill -0 10013
++./run_stageB.sh:73> ok_runs res pycom
++./run_stageB.sh:61> sleep 300
++ok_runs:1> /usr/local/bin/python3.13 - res pycom
++./run_stageB.sh:73> nshifts pycom
++nshifts:0> /usr/local/bin/python3.13 -c 'import datasets as D; print(len(D.default_shifts('\''pycom'\'')))'
++./run_stageB.sh:73> [ 15 -ge 15 ']'
++./run_stageB.sh:73> pgrep -f 'main.py --dataset pycom --shifts [0-9]* --root res --seeds 42 7 13'
++./run_stageB.sh:74> commit 'Final runs stage A: pycom (all splits x seeds 42, 7, 13)' res/pycom
++commit:0> msg='Final runs stage A: pycom (all splits x seeds 42, 7, 13)' 
++commit:0> shift
++commit:0> [ 1 -eq 0 ']'
++commit:1> mkdir .commit_lock
++commit:2> p=res/pycom
++commit:2> [ -e res/pycom ']'
++commit:2> git add -A -- res/pycom
++commit:3> git diff --cached --quiet
++commit:4> rmdir .commit_lock
++./run_stageB.sh:75> snapshot 3seeds 42 7 13
++snapshot:0> name=3seeds 
++snapshot:0> shift
++snapshot:0> R=res_3seeds 
++snapshot:0> J=res_joint_3seeds 
++snapshot:1> r=res_3seeds
++snapshot:1> [ -e res_3seeds ']'
++snapshot:1> k=1 
++snapshot:1> [ -e res_3seeds.old1 ']'
++snapshot:1> k=2 
++snapshot:1> [ -e res_3seeds.old2 ']'
++snapshot:1> mv res_3seeds res_3seeds.old2
++snapshot:1> r=res_joint_3seeds
++snapshot:1> [ -e res_joint_3seeds ']'
++snapshot:1> k=1 
++snapshot:1> [ -e res_joint_3seeds.old1 ']'
++snapshot:1> k=2 
++snapshot:1> [ -e res_joint_3seeds.old2 ']'
++snapshot:1> mv res_joint_3seeds res_joint_3seeds.old2
++snapshot:2> t=wisig
++snapshot:3> d=res/wisig/shift0
++snapshot:4> [ -d res/wisig/shift0 ']'
++snapshot:5> dst=res/wisig/shift0 
++snapshot:5> dst=res_3seeds/wisig/shift0 
++snapshot:6> sd=42
++snapshot:6> [ -d res/wisig/shift0/seed42 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res/wisig/shift0/seed42 res_3seeds/wisig/shift0/seed42
++snapshot:6> sd=7
++snapshot:6> [ -d res/wisig/shift0/seed7 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res/wisig/shift0/seed7 res_3seeds/wisig/shift0/seed7
++snapshot:6> sd=13
++snapshot:6> [ -d res/wisig/shift0/seed13 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res/wisig/shift0/seed13 res_3seeds/wisig/shift0/seed13
++snapshot:3> d=res/wisig/shift12
++snapshot:4> [ -d res/wisig/shift12 ']'
++snapshot:5> dst=res/wisig/shift12 
++snapshot:5> dst=res_3seeds/wisig/shift12 
++snapshot:6> sd=42
++snapshot:6> [ -d res/wisig/shift12/seed42 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift12
++snapshot:6> ln -s ../../../res/wisig/shift12/seed42 res_3seeds/wisig/shift12/seed42
++snapshot:6> sd=7
++snapshot:6> [ -d res/wisig/shift12/seed7 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift12
++snapshot:6> ln -s ../../../res/wisig/shift12/seed7 res_3seeds/wisig/shift12/seed7
++snapshot:6> sd=13
++snapshot:6> [ -d res/wisig/shift12/seed13 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift12
++snapshot:6> ln -s ../../../res/wisig/shift12/seed13 res_3seeds/wisig/shift12/seed13
++snapshot:3> d=res/wisig/shift4
++snapshot:4> [ -d res/wisig/shift4 ']'
++snapshot:5> dst=res/wisig/shift4 
++snapshot:5> dst=res_3seeds/wisig/shift4 
++snapshot:6> sd=42
++snapshot:6> [ -d res/wisig/shift4/seed42 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift4
++snapshot:6> ln -s ../../../res/wisig/shift4/seed42 res_3seeds/wisig/shift4/seed42
++snapshot:6> sd=7
++snapshot:6> [ -d res/wisig/shift4/seed7 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift4
++snapshot:6> ln -s ../../../res/wisig/shift4/seed7 res_3seeds/wisig/shift4/seed7
++snapshot:6> sd=13
++snapshot:6> [ -d res/wisig/shift4/seed13 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift4
++snapshot:6> ln -s ../../../res/wisig/shift4/seed13 res_3seeds/wisig/shift4/seed13
++snapshot:3> d=res/wisig/shift8
++snapshot:4> [ -d res/wisig/shift8 ']'
++snapshot:5> dst=res/wisig/shift8 
++snapshot:5> dst=res_3seeds/wisig/shift8 
++snapshot:6> sd=42
++snapshot:6> [ -d res/wisig/shift8/seed42 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift8
++snapshot:6> ln -s ../../../res/wisig/shift8/seed42 res_3seeds/wisig/shift8/seed42
++snapshot:6> sd=7
++snapshot:6> [ -d res/wisig/shift8/seed7 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift8
++snapshot:6> ln -s ../../../res/wisig/shift8/seed7 res_3seeds/wisig/shift8/seed7
++snapshot:6> sd=13
++snapshot:6> [ -d res/wisig/shift8/seed13 ']'
++snapshot:6> mkdir -p res_3seeds/wisig/shift8
++snapshot:6> ln -s ../../../res/wisig/shift8/seed13 res_3seeds/wisig/shift8/seed13
++snapshot:3> d=res_joint/wisig/shift0
++snapshot:4> [ -d res_joint/wisig/shift0 ']'
++snapshot:5> dst=res_joint_3seeds/wisig/shift0 
++snapshot:5> dst=res_joint_3seeds/wisig/shift0 
++snapshot:6> sd=42
++snapshot:6> [ -d res_joint/wisig/shift0/seed42 ']'
++snapshot:6> mkdir -p res_joint_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res_joint/wisig/shift0/seed42 res_joint_3seeds/wisig/shift0/seed42
++snapshot:6> sd=7
++snapshot:6> [ -d res_joint/wisig/shift0/seed7 ']'
++snapshot:6> mkdir -p res_joint_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res_joint/wisig/shift0/seed7 res_joint_3seeds/wisig/shift0/seed7
++snapshot:6> sd=13
++snapshot:6> [ -d res_joint/wisig/shift0/seed13 ']'
++snapshot:6> mkdir -p res_joint_3seeds/wisig/shift0
++snapshot:6> ln -s ../../../res_joint/wisig/shift0/seed13 res_joint_3seeds/wisig/shift0/seed13
++snapshot:2> t=pycom
+snapshot:3: no matches found: res_joint/pycom/shift*
