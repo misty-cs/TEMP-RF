@@ -57,3 +57,12 @@ for the sources). `data_prep/lora_duplicates.json` and the pool-check output
 define exactly which LoRa files were used; every run's manifest contains the
 data inventory (file names, sizes, modification times and a sampled content
 hash).
+
+## 5. Figures (analysis/)
+
+`analysis/compute_cache.py <ds>` embeds the test day with the saved Phase-3 model of
+the seed-42 run of every split (and, for split 0, every day and the Phase-1 model);
+`analysis/check_cache.py` verifies that the cached scores reproduce the official
+`common_eval.json` numbers of the same runs exactly; `analysis/make_figures.py`
+writes `analysis/figs/E*.pdf` (Experiments 1-7). Cache-based figures use the default
+rule settings (MP-NN with all part-A embeddings, W=1; k-NN with k=5).

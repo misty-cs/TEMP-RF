@@ -1,0 +1,7 @@
+dataset=lora slicing=- shifts=[0] seeds=[42] env={'T2R_FT_NTEST': '60', 'T2R_MINIMAL': '1', 'T2R_SKIP_PHASE4': '1', 'T2R_KEEP_CFO': '1', 'T2R_DEVICE_POOL': '0,1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20'} RUN
+split 0: tuned settings {'T2R_SUPCON_LAMBDA': '1.0', 'T2R_SUPCON_T': '0.1', 'T2R_P1_EPOCHS': '100', 'T2R_FT_REPLAY': '0.1', 'T2R_FT_LR2': '1e-05'}
+[Fri Oct  9 05:17:00 2026] res_pilot_tuned/lora/shift0/seed42 (new)
+  $ /usr/local/bin/python3.13 -u run_experiment.py --dataset_layout lora_oregon --data_root data/lora_indoor --n_known 16 --n_unknown 4 --ft_split_mode capture --init_day 1 --finetune_days 2,3 --traj_day 4 --test_day 5 --num_slice 780 --slice_len 1024 --ft_n_train 150 --no_ft_always_reinit --skip_plots --output_root res_pilot_tuned/lora/shift0/seed42 --seed 42 --device_shift 0 > res_pilot_tuned/lora/shift0/seed42/run.log
+  $ /usr/local/bin/python3.13 -u common_eval.py lora res_pilot_tuned/lora/shift0/seed42 0 42 contiguous > res_pilot_tuned/lora/shift0/seed42/common_eval.log
+  $ /usr/local/bin/python3.13 -u audit_run.py lora res_pilot_tuned/lora/shift0/seed42 0 42 contiguous > res_pilot_tuned/lora/shift0/seed42/audit.log
+done

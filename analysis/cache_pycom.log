@@ -1,0 +1,19 @@
+
+[data_utils] raw load + groups  day=5  root=data/pycom_indoor/Day_5
+[unzip_dataset] No archives found under data/pycom_indoor/Day_5
+Traceback (most recent call last):
+  File "/Users/misty/Downloads/temp-rf-code-1/analysis/compute_cache.py", line 52, in <module>
+    e, y, _ = embed_day(cfg, model, nrm, cfg.test_day, devs)
+              ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/misty/Downloads/temp-rf-code-1/analysis/compute_cache.py", line 33, in embed_day
+    X, y, _ = load_day_with_groups(cfg, day_id=day, device_ids=devs)
+              ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/misty/Downloads/temp-rf-code-1/data_utils.py", line 486, in load_day_with_groups
+    X_raw, y, groups = load_day_raw_with_groups(cfg, day_id, device_ids,
+                       ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                start_idx=start_idx)
+                                                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/misty/Downloads/temp-rf-code-1/data_utils.py", line 432, in load_day_raw_with_groups
+    (d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))),
+                ~~~~~~~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/pycom_indoor/Day_5'
