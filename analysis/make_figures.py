@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import roc_auc_score, roc_curve
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); os.chdir(ROOT)
 FIG = os.path.join(ROOT, 'analysis', 'figs'); os.makedirs(FIG, exist_ok=True)
-plt.rcParams.update({'font.size': 8, 'font.family': 'serif', 'axes.spines.top': False,
+plt.rcParams.update({'font.size': 8, 'font.family': 'serif', 'font.serif': ['Times New Roman', 'Times', 'STIXGeneral'], 'mathtext.fontset': 'stix', 'pdf.fonttype': 42, 'axes.spines.top': False,
                      'axes.spines.right': False, 'axes.grid': True, 'grid.linewidth': 0.3, 'grid.alpha': 0.5,
                      'legend.frameon': False, 'legend.fontsize': 6.5})
 DS = ['wisig', 'pycom', 'lora']; DSN = {'wisig': 'WiSig (equalized WiFi)', 'pycom': 'Pycom (raw WiFi)', 'lora': 'LoRa'}
@@ -209,7 +209,7 @@ for row, ds in zip(axs, have):
         unk = np.isin(y, c['unknown'])
         ax.scatter(Z[~unk, 0], Z[~unk, 1], s=1, c=y[~unk], cmap='tab20', alpha=0.7)
         ax.scatter(Z[unk, 0], Z[unk, 1], s=1, c='k', alpha=0.7)
-        ax.set_xticks([]); ax.set_yticks([]); ax.set_title(f'{DSN[ds]}: {t}', fontsize=6.5); ax.grid(False)
+        ax.set_xticks([]); ax.set_yticks([]); ax.set_title(f'{DSN[ds]}: {t}', fontsize=6); ax.grid(False)
 save(fig, 'E4b_tsne.pdf')
 
 # E6a: threshold sweep of MP-NN (split 0)
@@ -244,5 +244,5 @@ for ds in have:
     axs[1].bar(x - w / 2, [np.mean(dev_acc[d]) if dev_acc[d] else 0 for d in allk], w, color=COL['temp_rff'], label='accuracy when known')
     axs[1].bar(x + w / 2, [dev_auc.get(d, 0) for d in allk], w, color=COL['openmax'], label='AUROC when unknown')
     axs[1].axhline(0.5, ls=':', lw=0.7, color='k'); axs[1].set_xticks(x); axs[1].set_xticklabels(allk, fontsize=5)
-    axs[1].set_xlabel('device'); axs[1].set_ylim(0, 1.05); axs[1].legend(fontsize=5.5, loc='lower right')
+    axs[1].set_xlabel('device'); axs[1].set_ylim(0, 1.05); axs[1].legend(fontsize=5.5, loc='lower center', bbox_to_anchor=(0.5, 1.0), ncol=2)
     save(fig, f'E7_devices_{ds}.pdf')
