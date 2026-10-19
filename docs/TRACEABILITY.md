@@ -66,3 +66,7 @@ the seed-42 run of every split (and, for split 0, every day and the Phase-1 mode
 `common_eval.json` numbers of the same runs exactly; `analysis/make_figures.py`
 writes `analysis/figs/E*.pdf` (Experiments 1-7). Cache-based figures use the default
 rule settings (MP-NN with all part-A embeddings, W=1; k-NN with k=5).
+Numbers quoted in the text for these figures (bank-size curve, fixed90 accept and
+detection rates of the seed-42 runs, per-device ranges) are written by
+`analysis/cache_figure_numbers.py` to `analysis/cache_figure_numbers.json`; the cache
+check of all Pycom and LoRa splits is in `analysis/check_cache_pycom_lora.txt`.

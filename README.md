@@ -6,6 +6,24 @@ replay, reference-session adaptation with prototype banks) and evaluates
 open-set decision rules on one shared backbone: identify enrolled devices and
 reject devices that were never enrolled, across capture days.
 
+Terms: a *session* in the code is one capture day in the paper. TEMP-RFF is the
+whole four-phase framework; its default Phase-4 decision rule is MP-NN
+(multi-prototype nearest neighbor; result key `temp_rff`).
+
+## Main results (5 seeds, every device unknown once; closed-set accuracy / AUROC)
+
+| Phase-4 decision on the TEMP-RFF backbone | WiSig | Pycom | LoRa |
+|---|---|---|---|
+| MSP | 0.844 / 0.676 | 0.070 / 0.500 | 0.624 / 0.340 |
+| OpenMax | 0.800 / 0.698 | 0.080 / 0.500 | 0.612 / 0.553 |
+| Static centroid | 0.869 / 0.746 | 0.094 / 0.493 | 0.628 / 0.484 |
+| k-NN on banks | 0.906 / 0.802 | 0.105 / 0.501 | 0.627 / 0.555 |
+| MP-NN (default rule, selected settings) | 0.899 / 0.799 | 0.106 / 0.492 | 0.630 / 0.488 |
+| Raw centroid (no network) | 0.851 / 0.649 | 0.158 / 0.506 | 0.559 / 0.712 |
+
+Full tables: `res/<dataset>/SUMMARY.md` and `docs/results_5seeds/`; source of every
+number in the paper: `docs/TRACEABILITY.md`; figures: `analysis/`.
+
 ## Datasets (not included; download from the sources)
 
 | Name in code | Dataset | Days | Devices used | Input |
@@ -46,6 +64,7 @@ Single steps: `python main.py --dataset wisig` prints the plan; `--go` runs.
 | `docs/TRACEABILITY.md` | **where every number of the paper comes from** (start here) |
 | `docs/ARTIFACTS.tsv` | size and SHA-256 of the large files not stored in git (models, banks, calibration) |
 | `docs/logs/` | run-control, tuning, pool-check, final-run and scheduler logs (`tools/collect_logs.sh`) |
+| `analysis/` | figures and figure numbers from the saved models (read-only, after the final runs) |
 | `explore/` | exploratory analyses (disclosed; not confirmatory) |
 | `res_tune/<dataset>/` | tuning: every candidate, its score and the selection per split |
 | `res_pilot_tuned/`, `res/`, `res_joint/` | pilots and final runs: `common_eval.json`, `audit.json`, manifests |
