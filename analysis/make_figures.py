@@ -12,12 +12,14 @@ import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_auc_score, roc_curve
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); os.chdir(ROOT)
-FIG = os.path.join(ROOT, 'analysis', 'figs'); os.makedirs(FIG, exist_ok=True)
+# FIG_OUT / FIG_EXCLUDE: optional variant output (e.g. ICC figures without the linear probe:
+# FIG_OUT=analysis/figs_icc FIG_EXCLUDE=probe); defaults give the full figure set.
+FIG = os.path.join(ROOT, os.environ.get('FIG_OUT', os.path.join('analysis', 'figs'))); os.makedirs(FIG, exist_ok=True)
 plt.rcParams.update({'font.size': 8, 'font.family': 'serif', 'font.serif': ['Times New Roman', 'Times', 'STIXGeneral'], 'mathtext.fontset': 'stix', 'pdf.fonttype': 42, 'axes.spines.top': False,
                      'axes.spines.right': False, 'axes.grid': True, 'grid.linewidth': 0.3, 'grid.alpha': 0.5,
                      'legend.frameon': False, 'legend.fontsize': 6.5})
 DS = ['wisig', 'pycom', 'lora']; DSN = {'wisig': 'WiSig (equalized WiFi)', 'pycom': 'Pycom (raw WiFi)', 'lora': 'LoRa'}
-RULES = ['msp', 'probe', 'openmax', 'static', 'knn', 'temp_rff']
+RULES = [r for r in ['msp', 'probe', 'openmax', 'static', 'knn', 'temp_rff'] if r not in os.environ.get('FIG_EXCLUDE', '').split(',')]
 RN = {'msp': 'MSP', 'probe': 'Probe', 'openmax': 'OpenMax', 'static': 'Static', 'knn': 'k-NN', 'temp_rff': 'MP-NN',
       'raw_centroid': 'Raw centroid'}
 # fixed categorical order (never cycled); bank-based rules in the blue/green pair
@@ -68,7 +70,7 @@ for ax, met, yl in zip(axs, ['centroid', 'auroc'], ['closed-set accuracy', 'AURO
         ax.bar(x + (i - 1) * w, v, w * 0.9, yerr=e, capsize=1.5, error_kw={'lw': 0.5},
                color=['#4e79a7', '#f28e2b', '#59a14f'][i], label=DSN[ds])
     ax.set_xticks(x); ax.set_xticklabels(lab); ax.set_ylabel(yl); ax.set_ylim(0, 1)
-axs[1].axhline(0.5, ls=':', lw=0.7, color='k'); axs[0].legend(loc='upper left')
+axs[1].axhline(0.5, ls=':', lw=0.7, color='k'); fig.legend(*axs[0].get_legend_handles_labels(), ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.02))
 save(fig, 'E2_phases.pdf')
 
 # ---------- E3b: window W ----------
