@@ -59,7 +59,7 @@ save(fig, 'E1b_split_auroc.pdf')
 
 # ---------- E2: contribution of each phase ----------
 fig, axs = plt.subplots(1, 2, figsize=(W2, 1.9))
-st = ['phase1', 'phase2', 'phase3']; lab = ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4']
+st = ['phase1', 'phase2', 'phase3']; lab = ['Phase 1', 'Phase 2', 'Phase 3\n(BN)', 'Phase 4\n(MP-NN)']
 for ax, met, yl in zip(axs, ['centroid', 'auroc'], ['closed-set accuracy', 'AUROC']):
     x = np.arange(4); w = 0.26
     for i, ds in enumerate(DS):
