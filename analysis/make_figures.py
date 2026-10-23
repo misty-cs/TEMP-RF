@@ -23,8 +23,10 @@ RULES = [r for r in ['msp', 'probe', 'openmax', 'static', 'knn', 'temp_rff'] if 
 RN = {'msp': 'MSP', 'probe': 'Probe', 'openmax': 'OpenMax', 'static': 'Static', 'knn': 'k-NN', 'temp_rff': 'MP-NN',
       'raw_centroid': 'Raw centroid'}
 # fixed categorical order (never cycled); bank-based rules in the blue/green pair
-COL = {'msp': '#8c8c8c', 'probe': '#b07aa1', 'openmax': '#e15759', 'static': '#f28e2b', 'knn': '#4e79a7',
-       'temp_rff': '#59a14f', 'raw_centroid': '#76b7b2'}
+# Rule colors (same in every figure; set 2026-10-23): MP-NN red, k-NN green, static
+# centroid purple; the others use colors that differ from these three.
+COL = {'msp': '#8c8c8c', 'probe': '#9c755f', 'openmax': '#4e79a7', 'static': '#6a3d9a', 'knn': '#2e8b3e',
+       'temp_rff': '#c0392b', 'raw_centroid': '#76b7b2'}
 W1, W2 = 3.45, 7.16                                    # IEEE column / page width (inches)
 
 
@@ -94,12 +96,12 @@ axs[0].set_ylabel('known accept rate')
 save(fig, 'E4c_threshold_shift.pdf')
 
 # ---------- E5: few-shot re-enrollment ----------
-# Design chosen 2026-10-23 (analysis/fewshot_designs.py, variant D7): purple/teal/gold
+# Design chosen 2026-10-23 (analysis/fewshot_designs.py, variant D7, recolored): red MP-NN / green k-NN / purple static
 # lines with distinct dashes and markers; x = measured n values, evenly spaced (categories).
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
-FS_STY = {'temp_rff': ('MP-NN', '#6a3d9a', '-', 'o', 1.6, True), 'knn': ('k-NN', '#1b9e77', '--', 'D', 1.1, False),
-          'static': ('Static centroid', '#b8860b', '-.', 'v', 1.1, True)}
-fig, axs = plt.subplots(2, 3, figsize=(W2, 2.9), sharex=True)
+FS_STY = {'temp_rff': ('MP-NN', COL['temp_rff'], '-', 'o', 1.6, True), 'knn': ('k-NN', COL['knn'], '--', 'D', 1.1, False),
+          'static': ('Static centroid', COL['static'], '-.', 'v', 1.1, True)}
+fig, axs = plt.subplots(2, 3, figsize=(W2, 2.65), sharex=True)
 for j, ds in enumerate(DS):
     for i, met in enumerate(['closed', 'auroc']):
         ax = axs[i, j]
@@ -116,11 +118,11 @@ for j, ds in enumerate(DS):
         ax.yaxis.set_major_locator(MultipleLocator(stp))
         ax.yaxis.set_major_formatter(FormatStrFormatter('%.3f' if stp < 0.01 or stp == 0.025 else '%.2f'))
         ax.tick_params(labelsize=6, length=2.5, width=0.6, direction='out', pad=1.5)
-        if i == 0: ax.set_title(DSN[ds], fontsize=7.5)
+        if i == 0: ax.set_title(DSN[ds], fontsize=7.5, pad=3)
 axs[0, 0].set_ylabel('Accuracy'); axs[1, 0].set_ylabel('AUROC')
-fig.supxlabel('Labeled test-day samples per device', fontsize=7.5, y=0.045)
-fig.legend(*axs[0, 0].get_legend_handles_labels(), ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.05), fontsize=7, handlelength=2.8)
-fig.tight_layout(rect=(0, 0.04, 1, 0.96), h_pad=0.6)
+axs[1, 1].set_xlabel('Labeled test-day samples per device', fontsize=7.5, labelpad=2)
+fig.legend(*axs[0, 0].get_legend_handles_labels(), ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.005), fontsize=7, handlelength=2.8, borderaxespad=0.1)
+fig.tight_layout(rect=(0, 0, 1, 0.955), h_pad=0.3)
 fig.savefig(os.path.join(FIG, 'E5_fewshot.pdf'), bbox_inches='tight'); plt.close(fig); print('wrote E5_fewshot.pdf')
 
 # ---------- E6b: operating points (tuned thresholds) ----------
