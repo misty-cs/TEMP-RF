@@ -102,10 +102,11 @@ for j, ds in enumerate(DS):
             ks = sorted({int(k) for E in R[ds] for k in E['fewshot'][r]})
             v = [np.mean([E['fewshot'][r][str(k)][met] for E in R[ds] if str(k) in E['fewshot'][r]]) for k in ks]
             v0 = np.mean([E['rules'][r][met] for E in R[ds]])
-            ax.plot([0.7] + ks, [v0] + v, 'o-', ms=2.5, color=COL[r], label=RN[r])
+            ax.plot([0.4] + ks, [v0] + v, 'o-', ms=2.5, color=COL[r], label=RN[r])
         ax.set_xscale('log'); ax.set_ylabel('closed-set accuracy' if met == 'closed' else 'AUROC')
         if i == 0: ax.set_title(DSN[ds])
-        if i == 1: ax.set_xlabel('labeled test-day samples per device (0 at left)')
+        ax.set_xticks([0.4, 1, 10, 100]); ax.set_xticklabels(['0', '1', '10', '100']); ax.minorticks_off()
+        if i == 1: ax.set_xlabel('labeled test-day samples per device')
 axs[0, 0].legend()
 save(fig, 'E5_fewshot.pdf')
 
