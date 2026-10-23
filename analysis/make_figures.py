@@ -18,7 +18,7 @@ FIG = os.path.join(ROOT, os.environ.get('FIG_OUT', os.path.join('analysis', 'fig
 plt.rcParams.update({'font.size': 8, 'font.family': 'serif', 'font.serif': ['Times New Roman', 'Times', 'STIXGeneral'], 'mathtext.fontset': 'stix', 'pdf.fonttype': 42, 'axes.spines.top': False,
                      'axes.spines.right': False, 'axes.grid': True, 'grid.linewidth': 0.3, 'grid.alpha': 0.5,
                      'legend.frameon': False, 'legend.fontsize': 6.5})
-DS = ['wisig', 'pycom', 'lora']; DSN = {'wisig': 'WiSig (equalized WiFi)', 'pycom': 'Pycom (raw WiFi)', 'lora': 'LoRa'}
+DS = ['wisig', 'pycom', 'lora']; DSN = {'wisig': 'WiSig (equalized WiFi)', 'pycom': 'Pycom (raw WiFi)', 'lora': 'LoRa (raw)'}
 RULES = [r for r in ['msp', 'probe', 'openmax', 'static', 'knn', 'temp_rff'] if r not in os.environ.get('FIG_EXCLUDE', '').split(',')]
 RN = {'msp': 'MSP', 'probe': 'Probe', 'openmax': 'OpenMax', 'static': 'Static', 'knn': 'k-NN', 'temp_rff': 'MP-NN',
       'raw_centroid': 'Raw centroid'}
@@ -59,7 +59,7 @@ save(fig, 'E1b_split_auroc.pdf')
 
 # ---------- E2: contribution of each phase ----------
 fig, axs = plt.subplots(1, 2, figsize=(W2, 1.9))
-st = ['phase1', 'phase2', 'phase3']; lab = ['Phase 1', 'Phase 2', 'Phase 3 (BN)', 'Full (MP-NN)']
+st = ['phase1', 'phase2', 'phase3']; lab = ['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4']
 for ax, met, yl in zip(axs, ['centroid', 'auroc'], ['closed-set accuracy', 'AUROC']):
     x = np.arange(4); w = 0.26
     for i, ds in enumerate(DS):
