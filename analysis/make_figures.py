@@ -90,7 +90,7 @@ for ax, ds in zip(axs, DS):
     ax.bar([RN[r] for r in RULES], v, yerr=s, capsize=1.5, error_kw={'lw': 0.5}, color=[COL[r] for r in RULES])
     ax.axhline(0.9, ls='--', lw=0.7, color='k'); ax.set_title(DSN[ds]); ax.set_ylim(0, 1.05)
     ax.tick_params(axis='x', rotation=45)
-axs[0].set_ylabel('known accept rate on test day\n(target 0.90 on reference day)')
+axs[0].set_ylabel('known accept rate')
 save(fig, 'E4c_threshold_shift.pdf')
 
 # ---------- E5: few-shot re-enrollment ----------
