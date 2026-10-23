@@ -94,21 +94,34 @@ axs[0].set_ylabel('known accept rate')
 save(fig, 'E4c_threshold_shift.pdf')
 
 # ---------- E5: few-shot re-enrollment ----------
-fig, axs = plt.subplots(2, 3, figsize=(W2, 3.0), sharex=True)
+# Design chosen 2026-10-23 (analysis/fewshot_designs.py, variant D7): purple/teal/gold
+# lines with distinct dashes and markers; x = measured n values, evenly spaced (categories).
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
+FS_STY = {'temp_rff': ('MP-NN', '#6a3d9a', '-', 'o', 1.6, True), 'knn': ('k-NN', '#1b9e77', '--', 'D', 1.1, False),
+          'static': ('Static centroid', '#b8860b', '-.', 'v', 1.1, True)}
+fig, axs = plt.subplots(2, 3, figsize=(W2, 2.9), sharex=True)
 for j, ds in enumerate(DS):
     for i, met in enumerate(['closed', 'auroc']):
         ax = axs[i, j]
-        for r in ['temp_rff', 'knn', 'static']:
+        for r, (lab, c, ls, mk, lw, filled) in FS_STY.items():
             ks = sorted({int(k) for E in R[ds] for k in E['fewshot'][r]})
             v = [np.mean([E['fewshot'][r][str(k)][met] for E in R[ds] if str(k) in E['fewshot'][r]]) for k in ks]
             v0 = np.mean([E['rules'][r][met] for E in R[ds]])
-            ax.plot([0.4] + ks, [v0] + v, 'o-', ms=2.5, color=COL[r], label=RN[r])
-        ax.set_xscale('log'); ax.set_ylabel('closed-set accuracy' if met == 'closed' else 'AUROC')
-        if i == 0: ax.set_title(DSN[ds])
-        ax.set_xticks([0.4, 1, 10, 100]); ax.set_xticklabels(['0', '1', '10', '100']); ax.minorticks_off()
-        if i == 1: ax.set_xlabel('labeled test-day samples per device')
-axs[0, 0].legend()
-save(fig, 'E5_fewshot.pdf')
+            ax.plot(range(len(ks) + 1), [v0] + v, color=c, ls=ls, marker=mk, lw=lw, ms=3.0, label=lab,
+                    mfc=c if filled else 'white', mec='white' if filled else c, mew=0.7)
+        if met == 'auroc': ax.axhline(0.5, ls=(0, (1, 2)), lw=0.7, color='0.35')
+        xl = ['0'] + [str(k) for k in ks]
+        ax.set_xticks(range(len(xl))); ax.set_xticklabels(xl); ax.set_xlim(-0.4, len(xl) - 0.6)
+        lo, hi = ax.get_ylim(); stp = next(t for t in (0.005, 0.01, 0.02, 0.025, 0.05, 0.1) if (hi - lo) / t <= 7.5)
+        ax.yaxis.set_major_locator(MultipleLocator(stp))
+        ax.yaxis.set_major_formatter(FormatStrFormatter('%.3f' if stp < 0.01 or stp == 0.025 else '%.2f'))
+        ax.tick_params(labelsize=6, length=2.5, width=0.6, direction='out', pad=1.5)
+        if i == 0: ax.set_title(DSN[ds], fontsize=7.5)
+axs[0, 0].set_ylabel('Accuracy'); axs[1, 0].set_ylabel('AUROC')
+fig.supxlabel('Labeled test-day samples per device', fontsize=7.5, y=0.045)
+fig.legend(*axs[0, 0].get_legend_handles_labels(), ncol=3, loc='upper center', bbox_to_anchor=(0.5, 1.05), fontsize=7, handlelength=2.8)
+fig.tight_layout(rect=(0, 0.04, 1, 0.96), h_pad=0.6)
+fig.savefig(os.path.join(FIG, 'E5_fewshot.pdf'), bbox_inches='tight'); plt.close(fig); print('wrote E5_fewshot.pdf')
 
 # ---------- E6b: operating points (tuned thresholds) ----------
 fig, axs = plt.subplots(1, 3, figsize=(W2, 2.0), sharey=True)
