@@ -85,12 +85,12 @@ ax.set_xlabel('window W (enrollment days whose prototypes are used)'); ax.set_yl
 save(fig, 'E3b_window.pdf')
 
 # ---------- E4c: score shift (fixed90 accept on the test day) ----------
-fig, axs = plt.subplots(1, 3, figsize=(W2, 1.7), sharey=True)
+fig, axs = plt.subplots(1, 3, figsize=(W2, 1.5), sharey=True)
 for ax, ds in zip(axs, DS):
     v = [np.mean([E['rules'][r]['fixed90']['accept'] for E in R[ds]]) for r in RULES]
     s = [np.std([E['rules'][r]['fixed90']['accept'] for E in R[ds]], ddof=1) for r in RULES]
     ax.bar([RN[r] for r in RULES], v, yerr=s, capsize=1.5, error_kw={'lw': 0.5}, color=[COL[r] for r in RULES])
-    ax.axhline(0.9, ls='--', lw=0.7, color='k'); ax.set_title(DSN[ds]); ax.set_ylim(0, 1.05)
+    ax.axhline(0.9, ls='--', lw=0.7, color='k'); ax.set_title(DSN[ds]); ax.set_ylim(0, 1.05); ax.set_yticks([0, 0.5, 1.0])
     ax.tick_params(axis='x', rotation=45)
 axs[0].set_ylabel('known accept rate')
 save(fig, 'E4c_threshold_shift.pdf')
